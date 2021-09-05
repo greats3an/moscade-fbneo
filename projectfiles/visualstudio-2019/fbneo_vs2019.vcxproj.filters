@@ -4248,6 +4248,9 @@
     <ClCompile Include="..\..\src\burner\win32\luaconsole.cpp">
       <Filter>burner\win32</Filter>
     </ClCompile>
+    <ClCompile Include="moscade.cpp">
+      <Filter>burner\win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Burn">

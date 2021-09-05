@@ -2,7 +2,7 @@
 #include "ggponet.h"
 #include "ggpoclient.h"
 #include "ggpo_perfmon.h"
-
+#include "moscade.h"
 GGPOSession *ggpo = NULL;
 bool bSkipPerfmonUpdates = false;
 
@@ -443,8 +443,6 @@ static bool ggpo_init()
 
 void QuarkInit(TCHAR* tconnect)
 {
-	ggpo_init();
-
 	char connect[MAX_PATH];
 	TCHARToANSI(tconnect, connect, MAX_PATH);
 	char game[128], quarkid[128], server[128];
@@ -469,6 +467,34 @@ void QuarkInit(TCHAR* tconnect)
 	kNetLua = 1;
 #endif
 
+
+	/*@moscade */
+	if (strncmp(connect, "moscade://", strlen("moscade://")) == 0) {
+		char mode[128], game[128], host[128], dport[128], quark[128];		
+		sscanf(connect, "moscade://%[^,],%[^,],%[^:]:%[^@]@%s", mode, game, host,dport,quark);		
+		if (strcmp(GetGGPONetHost(), host) != 0) {
+			dprintf(_T("** Overwriting host:"));
+			dprintf(ANSIToTCHAR(host, NULL, 0));
+			SpawnOverwriteProcess(ANSIToTCHAR(connect, NULL, 0));
+			exit(0); // despawns our process & lets overwritter do the job
+		}
+		else {
+			dprintf(_T("** Host match! Procceding to connect.\n"));
+		}
+		memset(connect, 0, sizeof connect);
+		if (strncmp(mode, "match", strlen("match")) == 0) {
+			sprintf(connect, "quark:served,%s,%s,%s,0,1",game,quark,dport);
+		} else {
+			sprintf(connect, "quark:stream,%s,%s,%s",game,quark,dport);
+		}				
+		dprintf(_T("\n** Connecting via moscade:// protocol\n** Netplay LUA is enabled.\n"));
+		dprintf(_T("** MOSCade quark: "));
+		dprintf(ANSIToTCHAR(quark,NULL,0));		
+		dprintf(_T("\n"));
+		kNetLua = 1;			
+	}
+	
+	ggpo_init();
 	GGPOSessionCallbacks cb = { 0 };
 
 	cb.begin_game = ggpo_begin_game_callback;
@@ -478,22 +504,6 @@ void QuarkInit(TCHAR* tconnect)
 	cb.free_buffer = ggpo_free_buffer_callback;
 	cb.advance_frame = ggpo_advance_frame_callback;
 	cb.on_event = ggpo_on_event_callback;
-
-	if (strncmp(connect, "moscade://", strlen("moscade://")) == 0) {
-		char mode[128], game[128], host[128], dport[128], quark[128];		
-		sscanf(connect, "moscade://%[^,],%[^,],%[^:]:%[^@]@%s", mode, game, host,dport,quark);		
-		memset(connect, 0, sizeof connect);
-		if (strncmp(mode, "match", strlen("match")) == 0) {
-			sprintf(connect, "quark:served,%s,%s,%s,0,1",game,quark,dport);
-		} else {
-			sprintf(connect, "quark:stream,%s,%s,%s",game,quark,dport);
-		}		
-		dprintf(_T("** Connecting via moscade:// protocol\n** Netplay LUA is enabled.\n"));
-		dprintf(_T("** MOSCade quark: "));
-		dprintf(ANSIToTCHAR(quark,NULL,0));		
-		dprintf(_T("\n"));
-		kNetLua = 1;			
-	}
 
 	if (strncmp(connect, "quark:served", strlen("quark:served")) == 0) {
 		sscanf(connect, "quark:served,%[^,],%[^,],%d,%d,%d", game, quarkid, &port, &delay, &ranked);

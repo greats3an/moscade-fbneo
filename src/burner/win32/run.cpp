@@ -1,5 +1,6 @@
 // Run module
 #include "burner.h"
+#include <moscade.h>
 
 int bRunPause = 0;
 int bAltPause = 0;
@@ -648,11 +649,9 @@ int RunMessageLoop()
 											break;
 										}
 									}
-									if (i) {
-										char text[MAX_CHAT_SIZE + 1];
-										TCHARToANSI(EditText, text, MAX_CHAT_SIZE + 1);
+									if (i) {									
 										if (kNetGame) {
-											QuarkSendChatText(text);
+											QuarkSendChatText(ConvertLPWSTRToLPSTR(EditText));
 										}
 									}
 									DeActivateChat();

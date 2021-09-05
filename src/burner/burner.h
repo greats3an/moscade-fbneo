@@ -12,7 +12,6 @@
 #include <vector>
 #include <map>
 #include <string>
-
 #include "tchar.h"
 
 // Macro to make quoted strings
