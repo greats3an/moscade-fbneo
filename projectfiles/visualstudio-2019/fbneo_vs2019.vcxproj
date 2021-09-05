@@ -1665,7 +1665,6 @@ del build_details.exe
       <SubSystem>Windows</SubSystem>
       <IgnoreSpecificDefaultLibraries>winspool.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib</IgnoreSpecificDefaultLibraries>
       <OutputFile>$(SolutionDir)\..\..\build\$(TargetName)$(TargetExt)</OutputFile>
-      <ForceFileOutput>Enabled</ForceFileOutput>
       <AdditionalOptions>
       </AdditionalOptions>
     </Link>
