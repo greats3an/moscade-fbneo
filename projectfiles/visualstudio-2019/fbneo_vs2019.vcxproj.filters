@@ -4,9 +4,6 @@
     <ClInclude Include="..\..\src\burn\bitswap.h">
       <Filter>Burn</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\burn\version.h">
-      <Filter>Burn</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\burn\burn.h">
       <Filter>Burn</Filter>
     </ClInclude>
@@ -335,9 +332,6 @@
       <Filter>burner\win32</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\burner\win32\resource.h">
-      <Filter>burner\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\burner\win32\resource_string.h">
       <Filter>burner\win32</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\intf\interface.h">
@@ -870,6 +864,96 @@
     </ClInclude>
     <ClInclude Include="..\..\src\burn\snd\i5000.h">
       <Filter>Burn\snd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\burner\luaengine.h">
+      <Filter>burner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\burner\luasav.h">
+      <Filter>burner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\lapi.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\lauxlib.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\lcode.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\ldebug.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\ldo.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\lfunc.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\lgc.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\llex.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\llimits.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\lmem.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\lobject.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\lopcodes.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\lparser.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\lstate.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\lstring.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\ltable.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\ltm.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\lua.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\luaconf.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\lualib.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\lundump.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\lvm.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\libs\lua\lzio.h">
+      <Filter>libs\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\burner\win32\dynhuff.h">
+      <Filter>burner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\burn\version.h">
+      <Filter>Burn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\dep\vc\include\afxres.h">
+      <Filter>burner\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="generated\build_details.h">
+      <Filter>burner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\burner\win32\moscade.h">
+      <Filter>burner\win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -4056,6 +4140,114 @@
     <ClCompile Include="..\..\src\intf\audio\win32\aud_xaudio2.cpp">
       <Filter>interfaces\audio\win32</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\burner\luaengine.cpp">
+      <Filter>burner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\burner\luasav.cpp">
+      <Filter>burner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lapi.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lauxlib.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lbaselib.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lcode.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\ldblib.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\ldebug.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\ldo.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\ldump.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lfunc.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lgc.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\linit.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\liolib.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\llex.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lmathlib.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lmem.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\loadlib.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lobject.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lopcodes.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\loslib.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lparser.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lstate.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lstring.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lstrlib.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\ltable.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\ltablib.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\ltm.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\luac.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lundump.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lvm.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\lzio.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dep\libs\lua\print.c">
+      <Filter>libs\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\burner\win32\dynhuff.cpp">
+      <Filter>burner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\burner\win32\fba_kaillera.cpp">
+      <Filter>burner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\burner\win32\luaconsole.cpp">
+      <Filter>burner\win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Burn">
@@ -4295,6 +4487,9 @@
     <Filter Include="cpus\e132xs">
       <UniqueIdentifier>{6e7e6c8a-3338-49a0-b9d6-cb35cc16509c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="libs\lua">
+      <UniqueIdentifier>{b9badf1e-b347-4ef3-a885-ac5d4532848c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\burn\burn_sound_a.asm">
@@ -4336,6 +4531,12 @@
     <ResourceCompile Include="..\..\src\burner\win32\resource.rc">
       <Filter>burner\win32</Filter>
     </ResourceCompile>
+    <ResourceCompile Include="..\..\src\burner\win32\string.rc">
+      <Filter>burner</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="..\..\src\burner\win32\version.rc">
+      <Filter>burner</Filter>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\src\burn\drv\capcom\ctv_make.cpp">
@@ -4344,9 +4545,11 @@
     <CustomBuild Include="..\..\src\cpu\m68k\m68kmake.c">
       <Filter>cpus\m68k</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\..\src\dep\scripts\build_details.cpp" />
     <CustomBuild Include="..\..\src\burn\drv\pgm\pgm_sprite_create.cpp">
       <Filter>Burn\drv\pgm</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\src\dep\scripts\build_details.cpp">
+      <Filter>ggpo</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

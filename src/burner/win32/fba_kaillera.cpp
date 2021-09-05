@@ -116,13 +116,6 @@ int KailleraGetInput()
 	// k has the size of all inputs for one player
 	k = j + 1;
 
-	// Send the control block to the Kaillera DLL & retrieve all controls
-	//if (kailleraModifyPlayValues(nControls, k) == -1) {
-	if (Kaillera_Modify_Play_Values(nControls, k) == -1) {
-		kNetGame = 0;
-		return 1;
-	}
-
 	// Decode Player 1 input block
 	for (i = 0, j = 0; i < nPlayerInputs[0]; i++, j++) {
 		BurnDrvGetInputInfo(&bii, i + nPlayerOffset[0]);

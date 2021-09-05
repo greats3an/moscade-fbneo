@@ -1243,9 +1243,9 @@ void MenuEnableItems()
 	}
 
 	// Fightcade: disable old blitters
-	EnableMenuItem(hMenu, MENU_BLITTER_1, MF_GRAYED | MF_BYCOMMAND);
-	EnableMenuItem(hMenu, MENU_BLITTER_2, MF_GRAYED | MF_BYCOMMAND);
-	//EnableMenuItem(hMenu, MENU_BLITTER_4, MF_GRAYED | MF_BYCOMMAND);
+	// EnableMenuItem(hMenu, MENU_BLITTER_1, MF_GRAYED | MF_BYCOMMAND);
+	// EnableMenuItem(hMenu, MENU_BLITTER_2, MF_GRAYED | MF_BYCOMMAND);
+	// EnableMenuItem(hMenu, MENU_BLITTER_4, MF_GRAYED | MF_BYCOMMAND);
 
 	// Auto-size image when software blitter effects are enabled
 	if ((nVidSelect == 1 && (nVidBlitterOpt[1] & 0x07000000) == 0x07000000) || (nVidSelect == 2 && nVidBlitterOpt[2] & 0x0100)) {

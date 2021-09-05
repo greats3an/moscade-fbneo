@@ -2,7 +2,7 @@
 #include "burner.h"
 #include "luaengine.h"
 #include <shlobj.h>
-
+#include <moscade.h>
 #define		HORIZONTAL_ORIENTED_RES		0
 #define		VERTICAL_ORIENTED_RES			1
 
@@ -2367,6 +2367,10 @@ static void OnCommand(HWND /*hDlg*/, int id, HWND /*hwndCtl*/, UINT codeNotify)
 
 		case MENU_OVERLAY:
 			bVidOverlay = !bVidOverlay;
+			break;
+
+		case MENU_INSTALL_HANDLER:
+			InstallHandler();
 			break;
 
 		case MENU_BIG_OVERLAY:

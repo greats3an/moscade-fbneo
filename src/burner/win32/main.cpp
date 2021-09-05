@@ -1005,6 +1005,10 @@ int ProcessCmdLine()
 					// Command: quark netplay
 					QuarkInit(szOption);
 				}
+				else if (wcsstr(szOption, _T("moscade://")) != 0) {
+					// Command: quark netplay via moscade
+					QuarkInit(szOption);
+				}
 				else {
 					// Command: load game
 					bQuietLoading = true;

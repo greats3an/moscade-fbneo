@@ -46,7 +46,6 @@ INT32 DDCore_Init();
 #endif
 
 #include "resource.h"
-#include "resource_string.h"
 
 // ---------------------------------------------------------------------------
 

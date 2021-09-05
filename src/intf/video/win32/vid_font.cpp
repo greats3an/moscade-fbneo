@@ -279,7 +279,7 @@ void CFont::InternalWrite(float x, float y, float z, DWORD color, const wchar_t 
 		int charId = GetTextChar(text, n, &n);
 		SCharDescr *ch = GetChar(charId);
 		if( ch == 0 ) ch = &defChar;
-
+		
 		// Map the center of the texel to the corners
 		// in order to get pixel perfect mapping
 		float u = (float(ch->srcX)+0.5f) / scaleW;

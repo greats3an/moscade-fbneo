@@ -1,7 +1,5 @@
 #include "burner.h"
 #include "vid_detector.h"
-#include "detector_buffers.h"
-
 struct DetectorBuffer {
 	char name[128];
 	const unsigned char *buffer;
@@ -10,7 +8,6 @@ struct DetectorBuffer {
 
 #define ITEM(name,buffer,size) { name,buffer,size },
 static DetectorBuffer detector_buffers[] = {
-	#include "detector_loaders.h"
 	{ "", 0, 0 },
 };
 #undef ITEM

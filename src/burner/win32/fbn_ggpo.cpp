@@ -383,16 +383,16 @@ bool __cdecl ggpo_load_game_state_callback(unsigned char *buffer, int len)
 		}
 		buffer += headersize;
 	}
-	gAcbScanPointer = (char *)buffer;
-	BurnAcb = QuarkWriteAcb;
-	nAcbLoadState = kNetSpectator;
-	BurnAreaScan(ACB_FULLSCANL | ACB_WRITE, NULL);
-	nAcbLoadState = 0;
-	nAcbVersion = nBurnVer;
-	return true;
+gAcbScanPointer = (char*)buffer;
+BurnAcb = QuarkWriteAcb;
+nAcbLoadState = kNetSpectator;
+BurnAreaScan(ACB_FULLSCANL | ACB_WRITE, NULL);
+nAcbLoadState = 0;
+nAcbVersion = nBurnVer;
+return true;
 }
 
-bool __cdecl ggpo_log_game_state_callback(char *filename, unsigned char *buffer, int len)
+bool __cdecl ggpo_log_game_state_callback(char* filename, unsigned char* buffer, int len)
 {
 	/*
 	 * Note: this is destructive since it relies on loading game
@@ -416,13 +416,13 @@ bool __cdecl ggpo_log_game_state_callback(char *filename, unsigned char *buffer,
 	return true;
 }
 
-void __cdecl ggpo_free_buffer_callback(void *buffer)
+void __cdecl ggpo_free_buffer_callback(void* buffer)
 {
 	free(buffer);
 }
 
 // ggpo_set_frame_delay from lib
-typedef INT32(_cdecl *f_ggpo_set_frame_delay)(GGPOSession *, int frames);
+typedef INT32(_cdecl* f_ggpo_set_frame_delay)(GGPOSession*, int frames);
 static f_ggpo_set_frame_delay ggpo_set_frame_delay;
 
 static bool ggpo_init()
@@ -441,7 +441,7 @@ static bool ggpo_init()
 	return true;
 }
 
-void QuarkInit(TCHAR *tconnect)
+void QuarkInit(TCHAR* tconnect)
 {
 	ggpo_init();
 
@@ -479,6 +479,22 @@ void QuarkInit(TCHAR *tconnect)
 	cb.advance_frame = ggpo_advance_frame_callback;
 	cb.on_event = ggpo_on_event_callback;
 
+	if (strncmp(connect, "moscade://", strlen("moscade://")) == 0) {
+		char mode[128], game[128], host[128], dport[128], quark[128];		
+		sscanf(connect, "moscade://%[^,],%[^,],%[^:]:%[^@]@%s", mode, game, host,dport,quark);		
+		memset(connect, 0, sizeof connect);
+		if (strncmp(mode, "match", strlen("match")) == 0) {
+			sprintf(connect, "quark:served,%s,%s,%s,0,1",game,quark,dport);
+		} else {
+			sprintf(connect, "quark:stream,%s,%s,%s",game,quark,dport);
+		}		
+		dprintf(_T("** Connecting via moscade:// protocol\n** Netplay LUA is enabled.\n"));
+		dprintf(_T("** MOSCade quark: "));
+		dprintf(ANSIToTCHAR(quark,NULL,0));		
+		dprintf(_T("\n"));
+		kNetLua = 1;			
+	}
+
 	if (strncmp(connect, "quark:served", strlen("quark:served")) == 0) {
 		sscanf(connect, "quark:served,%[^,],%[^,],%d,%d,%d", game, quarkid, &port, &delay, &ranked);
 		iRanked = ranked;
@@ -487,6 +503,9 @@ void QuarkInit(TCHAR *tconnect)
 		iSeed = GetHash(quarkid, strlen(quarkid) - 2);
 		ggpo = ggpo_client_connect(&cb, game, quarkid, port);
 		ggpo_set_frame_delay(ggpo, delay);
+		dprintf(_T("** Quark"));
+		dprintf(ANSIToTCHAR(connect,NULL,0));
+		dprintf(_T("\n"));
 		VidOverlaySetSystemMessage(_T("Connecting..."));
 	}
 	else if (strncmp(connect, "quark:direct", strlen("quark:direct")) == 0) {

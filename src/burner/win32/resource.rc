@@ -1,14 +1,9 @@
 #ifdef APSTUDIO_INVOKED
- #error This file cannot be edited using the Visual C resource editor
+#error This file cannot be edited using the Visual C resource editor
 #endif
 
 #define MAKE_STRING_2(s) #s
 #define MAKE_STRING(s) MAKE_STRING_2(s)
-
-#ifdef __GNUC__
- #define _WIN32_WINDOWS 0x410
- #define _WIN32_IE 0x0500
-#endif
 
 // For version macros
 #include "version.h"
@@ -16,13 +11,9 @@
 #include "title.h"
 
 // String IDs
-#include "resource_string.h"
+#include "resource.h"
 
-#ifdef __GNUC__
- #include "app_gnuc.rc"
-#else
- #include "app.rc"
-#endif
+#include "app.rc"
 
 // Version resource
 #include "version.rc"
@@ -40,5 +31,3 @@ ID_DX9EFFECT RCDATA	"resource/bicubic.fx"
 
 // GUI strings
 #include "string.rc"
-
-

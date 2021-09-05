@@ -9,12 +9,12 @@
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
+    <ProjectConfiguration Include="ReleaseBuild|Win32">
+      <Configuration>ReleaseBuild</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
+    <ProjectConfiguration Include="ReleaseBuild|x64">
+      <Configuration>ReleaseBuild</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -23,14 +23,17 @@
     <ClInclude Include="..\..\src\burner\dynhuff.h" />
     <ClInclude Include="..\..\src\burner\gameinp.h" />
     <ClInclude Include="..\..\src\burner\ioapi.h" />
+    <ClInclude Include="..\..\src\burner\luaengine.h" />
+    <ClInclude Include="..\..\src\burner\luasav.h" />
     <ClInclude Include="..\..\src\burner\neocdlist.h" />
     <ClInclude Include="..\..\src\burner\title.h" />
     <ClInclude Include="..\..\src\burner\un7z.h" />
     <ClInclude Include="..\..\src\burner\unzip.h" />
     <ClInclude Include="..\..\src\burner\win32\burner_win32.h" />
     <ClInclude Include="..\..\src\burner\win32\d3dkmt_sync.h" />
+    <ClInclude Include="..\..\src\burner\win32\dynhuff.h" />
+    <ClInclude Include="..\..\src\burner\win32\moscade.h" />
     <ClInclude Include="..\..\src\burner\win32\resource.h" />
-    <ClInclude Include="..\..\src\burner\win32\resource_string.h" />
     <ClInclude Include="..\..\src\burn\bitswap.h" />
     <ClInclude Include="..\..\src\burn\burn.h" />
     <ClInclude Include="..\..\src\burn\burnint.h" />
@@ -270,6 +273,29 @@
     <ClInclude Include="..\..\src\dep\libs\libpng\pnglibconf.h" />
     <ClInclude Include="..\..\src\dep\libs\libpng\pngpriv.h" />
     <ClInclude Include="..\..\src\dep\libs\libpng\pngstruct.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\lapi.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\lauxlib.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\lcode.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\ldebug.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\ldo.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\lfunc.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\lgc.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\llex.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\llimits.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\lmem.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\lobject.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\lopcodes.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\lparser.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\lstate.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\lstring.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\ltable.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\ltm.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\lua.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\luaconf.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\lualib.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\lundump.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\lvm.h" />
+    <ClInclude Include="..\..\src\dep\libs\lua\lzio.h" />
     <ClInclude Include="..\..\src\dep\libs\zlib\crc32.h" />
     <ClInclude Include="..\..\src\dep\libs\zlib\deflate.h" />
     <ClInclude Include="..\..\src\dep\libs\zlib\gzguts.h" />
@@ -281,6 +307,7 @@
     <ClInclude Include="..\..\src\dep\libs\zlib\zconf.h" />
     <ClInclude Include="..\..\src\dep\libs\zlib\zlib.h" />
     <ClInclude Include="..\..\src\dep\libs\zlib\zutil.h" />
+    <ClInclude Include="..\..\src\dep\vc\include\afxres.h" />
     <ClInclude Include="..\..\src\intf\audio\aud_dsp.h" />
     <ClInclude Include="..\..\src\intf\audio\lowpass2.h" />
     <ClInclude Include="..\..\src\intf\audio\win32\dsound_core.h" />
@@ -309,6 +336,7 @@
     <ClInclude Include="..\..\src\intf\video\win32\vid_font.h" />
     <ClInclude Include="..\..\src\intf\video\win32\vid_memorybuffer.h" />
     <ClInclude Include="..\..\src\intf\video\win32\vid_overlay.h" />
+    <ClInclude Include="generated\build_details.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\burner\conc.cpp" />
@@ -319,6 +347,8 @@
     <ClCompile Include="..\..\src\burner\gami.cpp" />
     <ClCompile Include="..\..\src\burner\image.cpp" />
     <ClCompile Include="..\..\src\burner\ioapi.c" />
+    <ClCompile Include="..\..\src\burner\luaengine.cpp" />
+    <ClCompile Include="..\..\src\burner\luasav.cpp" />
     <ClCompile Include="..\..\src\burner\misc.cpp" />
     <ClCompile Include="..\..\src\burner\sshot.cpp" />
     <ClCompile Include="..\..\src\burner\state.cpp" />
@@ -333,6 +363,8 @@
     <ClCompile Include="..\..\src\burner\win32\d3dkmt_sync.cpp" />
     <ClCompile Include="..\..\src\burner\win32\debugger.cpp" />
     <ClCompile Include="..\..\src\burner\win32\drv.cpp" />
+    <ClCompile Include="..\..\src\burner\win32\dynhuff.cpp" />
+    <ClCompile Include="..\..\src\burner\win32\fba_kaillera.cpp" />
     <ClCompile Include="..\..\src\burner\win32\fbn_ggpo.cpp" />
     <ClCompile Include="..\..\src\burner\win32\fbn_ggpo_perfmon.cpp" />
     <ClCompile Include="..\..\src\burner\win32\fbn_network.cpp" />
@@ -347,6 +379,7 @@
     <ClCompile Include="..\..\src\burner\win32\localise.cpp" />
     <ClCompile Include="..\..\src\burner\win32\localise_download.cpp" />
     <ClCompile Include="..\..\src\burner\win32\localise_gamelist.cpp" />
+    <ClCompile Include="..\..\src\burner\win32\luaconsole.cpp" />
     <ClCompile Include="..\..\src\burner\win32\main.cpp" />
     <ClCompile Include="..\..\src\burner\win32\media.cpp" />
     <ClCompile Include="..\..\src\burner\win32\memcard.cpp" />
@@ -507,6 +540,37 @@
     <ClCompile Include="..\..\src\cpu\e132xs\e132xs.cpp" />
     <ClCompile Include="..\..\src\cpu\z80\z80ctc.cpp" />
     <ClCompile Include="..\..\src\cpu\z80\z80pio.cpp" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lapi.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lauxlib.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lbaselib.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lcode.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\ldblib.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\ldebug.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\ldo.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\ldump.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lfunc.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lgc.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\linit.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\liolib.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\llex.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lmathlib.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lmem.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\loadlib.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lobject.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lopcodes.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\loslib.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lparser.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lstate.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lstring.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lstrlib.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\ltable.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\ltablib.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\ltm.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\luac.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lundump.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lvm.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\lzio.c" />
+    <ClCompile Include="..\..\src\dep\libs\lua\print.c" />
     <ClCompile Include="..\..\src\intf\audio\win32\aud_xaudio2.cpp" />
     <ClCompile Include="..\..\src\intf\cd\win32\cd_img.cpp" />
     <ClCompile Include="..\..\src\intf\video\win32\vid_detector.cpp" />
@@ -521,13 +585,14 @@
 %(Filename).exe &gt; generated\ctv.h 
 del %(Filename).obj
 del %(Filename).exe</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\generated\ctv.h</Outputs>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl ..\..\src\burn\drv\capcom\%(Filename).cpp 
+      <Command Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'">cl ..\..\src\burn\drv\capcom\%(Filename).cpp 
 %(Filename).exe &gt; generated\ctv.h 
 del %(Filename).obj
 del %(Filename).exe</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\generated\ctv.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\generated\ctv.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'">..\generated\ctv.h</Outputs>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'">false</DeploymentContent>
     </CustomBuild>
     <ClCompile Include="..\..\src\burn\drv\capcom\d_cps1.cpp" />
     <ClCompile Include="..\..\src\burn\drv\capcom\d_cps2.cpp" />
@@ -738,12 +803,12 @@ del %(Filename).exe</Command>
 %(Filename).exe &gt; generated\pgm_sprite.h 
 del %(Filename).obj
 del %(Filename).exe</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pgm_sprite.h</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl ..\..\src\burn\drv\pgm\%(Filename).cpp 
+      <Command Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'">cl ..\..\src\burn\drv\pgm\%(Filename).cpp 
 %(Filename).exe &gt; generated\pgm_sprite.h 
 del %(Filename).obj
 del %(Filename).exe</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">pgm_sprite.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pgm_sprite.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'">pgm_sprite.h</Outputs>
     </CustomBuild>
     <ClCompile Include="..\..\src\burn\drv\pre90s\d_1942.cpp" />
     <ClCompile Include="..\..\src\burn\drv\pre90s\d_1943.cpp" />
@@ -1235,9 +1300,11 @@ del %(Filename).exe</Command>
     <ClCompile Include="..\..\src\burn\snd\x1010.cpp" />
     <ClCompile Include="..\..\src\burn\snd\ym2151.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Default</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'">Default</CompileAs>
     </ClCompile>
     <ClCompile Include="..\..\src\burn\snd\ym2413.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Default</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'">Default</CompileAs>
     </ClCompile>
     <ClCompile Include="..\..\src\burn\snd\ym2612.c" />
     <ClCompile Include="..\..\src\burn\snd\ymdeltat.c" />
@@ -1272,9 +1339,7 @@ del %(Filename).exe</Command>
     <ClCompile Include="..\..\src\cpu\m6809\m6809.cpp" />
     <ClCompile Include="..\..\src\cpu\m6809_intf.cpp" />
     <ClCompile Include="..\..\src\cpu\m68k\m68kcpu.c" />
-    <ClCompile Include="..\..\src\cpu\m68k\m68kdasm.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\..\src\cpu\m68k\m68kdasm.c" />
     <CustomBuild Include="..\..\src\cpu\m68k\m68kmake.c">
       <FileType>CppCode</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /DINLINE="__inline static" ..\..\src\cpu\m68k\%(Filename).c
@@ -1284,15 +1349,15 @@ del %(Filename).obj
 del %(Filename).exe
 
 </Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">m68kmake.exe</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cl /DINLINE="__inline static" ..\..\src\cpu\m68k\%(Filename).c
+      <Command Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'">cl /DINLINE="__inline static" ..\..\src\cpu\m68k\%(Filename).c
 
 %(Filename).exe generated/ ..\..\src\cpu\m68k\m68k_in.c
 del %(Filename).obj
 del %(Filename).exe
 
 </Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">m68kmake.exe</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">m68kmake.exe</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'">m68kmake.exe</Outputs>
     </CustomBuild>
     <ClCompile Include="..\..\src\cpu\mips3\cop0.cpp" />
     <ClCompile Include="..\..\src\cpu\mips3\cop1.cpp" />
@@ -1393,6 +1458,7 @@ del %(Filename).exe
     <ClCompile Include="..\..\src\dep\libs\zlib\zutil.c" />
     <CustomBuild Include="..\..\src\dep\scripts\build_details.cpp">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'">false</DeploymentContent>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cd ..
 cd ..
 cd src
@@ -1403,8 +1469,7 @@ build_details &gt;../../../projectfiles/visualstudio-2019/generated/build_detail
 del build_details.obj
 del build_details.exe
 </Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">build_details.h</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cd ..
+      <Command Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'">cd ..
 cd ..
 cd src
 cd dep
@@ -1414,7 +1479,8 @@ build_details &gt;../../../projectfiles/visualstudio-2019/generated/build_detail
 del build_details.obj
 del build_details.exe
 </Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">build_details.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">build_details.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'">build_details.h</Outputs>
     </CustomBuild>
     <ClCompile Include="..\..\src\intf\audio\aud_dsp.cpp" />
     <ClCompile Include="..\..\src\intf\audio\aud_interface.cpp" />
@@ -1464,15 +1530,17 @@ del build_details.exe
     <None Include="..\..\src\burner\win32\app.rc" />
     <ResourceCompile Include="..\..\src\burner\win32\resource.rc">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\src\burn;..\..\src\burner;..\..\src\dep\generated;..\..\src\intf\video\win32;generated</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\src\burn;..\..\src\burner;..\..\src\dep\generated;..\..\src\intf\video\win32;generated</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'">..\..\src\burn;..\..\src\burner;..\..\src\dep\generated;..\..\src\intf\video\win32;generated</AdditionalIncludeDirectories>
     </ResourceCompile>
+    <ResourceCompile Include="..\..\src\burner\win32\string.rc" />
+    <ResourceCompile Include="..\..\src\burner\win32\version.rc" />
     <ResourceCompile Include="..\..\src\dep\libs\lib7z\7zVersion.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{86D06C32-A849-4988-A176-A38D014C36C1}</ProjectGuid>
     <RootNamespace>fbneo_vs2019</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>fcadefbneo</ProjectName>
+    <ProjectName>moscadefbneo</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -1481,25 +1549,24 @@ del build_details.exe
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -1507,37 +1574,39 @@ del build_details.exe
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;..\..\src\dep\vc\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;..\..\src\dep\libs\lua;..\..\src\dep\vc\include;$(IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)$(Configuration)\</IntDir>
     <LibraryPath>$(LibraryPath)</LibraryPath>
-    <TargetName>fcadefbneod</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'">
+    <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;..\..\src\dep\libs\lua;..\..\src\dep\vc\include;$(IncludePath)</IncludePath>
+    <IntDir>$(SolutionDir)$(Configuration)\</IntDir>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;..\..\src\dep\vc\include;$(IncludePath)</IncludePath>
     <TargetName>fcadefbneod64</TargetName>
     <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IntDir>$(SolutionDir)$(Configuration)\</IntDir>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|x64'">
     <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;..\..\src\dep\vc\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
-    <TargetName>fcadefbneo</TargetName>
-    <GenerateManifest>true</GenerateManifest>
+    <TargetName>fcadefbneod64</TargetName>
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level2</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>generated;..\..\src\dep\libs\zlib;..\..\src\dep\libs\lib7z;..\..\src\dep\libs\libpng;..\..\src\dep\generated;..\..\src\dep\ggpo\include;..\..\src\burner\win32\resource;..\..\src\burn\drv\taito;..\..\src\burn\drv\misc_post90s;..\..\src\burn\devices;..\..\src\intf\audio\win32;..\..\src\intf\audio;..\..\src\intf\;..\..\src\intf\video\scalers;..\..\src\intf\video\win32;..\..\src\intf\video;..\..\src\intf\perfcount\win32;..\..\src\intf\perfcount;..\..\src\intf\input\win32;..\..\src\intf\input;..\..\src\intf\cd\win32;..\..\src\intf\cd;..\..\src\intf;..\..\src\burner\win32;..\..\src\burn\snd;..\..\src\cpu;..\..\src\burner;..\..\src\burn;..\..\src\cpu\z80;..\..\src\cpu\sh2;..\..\src\cpu\s2650;..\..\src\cpu\nec;..\..\src\cpu\m6809;..\..\src\cpu\m6805;..\..\src\cpu\m6800;..\..\src\cpu\m6502;..\..\src\cpu\m68k;..\..\src\cpu\i8039;..\..\src\cpu\konami;..\..\src\cpu\hd6309;..\..\src\cpu\h6280;..\..\src\cpu\arm7;..\..\src\cpu\arm;..\..\src\cpu\g65816;..\..\src\cpu\spc700;..\..\src\cpu\i8051;..\..\src\cpu\tms32010;..\..\src\cpu\tms34010;..\..\src\cpu\i8x41;..\..\src\burn\drv\sega;..\..\src\burn\drv\dataeast;..\..\src\burn\drv\konami;..\..\src\cpu\z180;..\..\src\burn\drv\irem;..\..\src\cpu\upd7810;..\..\src\cpu\v60;..\..\src\cpu\upd7725;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>Default</CompileAs>
@@ -1555,6 +1624,8 @@ del build_details.exe
       <SubSystem>Windows</SubSystem>
       <IgnoreSpecificDefaultLibraries>winspool.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib</IgnoreSpecificDefaultLibraries>
       <OutputFile>$(SolutionDir)\..\..\build\$(TargetName)$(TargetExt)</OutputFile>
+      <AdditionalOptions>
+      </AdditionalOptions>
     </Link>
     <PreBuildEvent>
       <Command>
@@ -1566,6 +1637,52 @@ del build_details.exe
     <Xdcmake>
       <DocumentLibraryDependencies>false</DocumentLibraryDependencies>
     </Xdcmake>
+    <ResourceCompile>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|Win32'">
+    <ClCompile>
+      <WarningLevel>Level2</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>generated;..\..\src\dep\libs\zlib;..\..\src\dep\libs\lib7z;..\..\src\dep\libs\libpng;..\..\src\dep\generated;..\..\src\dep\ggpo\include;..\..\src\burner\win32\resource;..\..\src\burn\drv\taito;..\..\src\burn\drv\misc_post90s;..\..\src\burn\devices;..\..\src\intf\audio\win32;..\..\src\intf\audio;..\..\src\intf\;..\..\src\intf\video\scalers;..\..\src\intf\video\win32;..\..\src\intf\video;..\..\src\intf\perfcount\win32;..\..\src\intf\perfcount;..\..\src\intf\input\win32;..\..\src\intf\input;..\..\src\intf\cd\win32;..\..\src\intf\cd;..\..\src\intf;..\..\src\burner\win32;..\..\src\burn\snd;..\..\src\cpu;..\..\src\burner;..\..\src\burn;..\..\src\cpu\z80;..\..\src\cpu\sh2;..\..\src\cpu\s2650;..\..\src\cpu\nec;..\..\src\cpu\m6809;..\..\src\cpu\m6805;..\..\src\cpu\m6800;..\..\src\cpu\m6502;..\..\src\cpu\m68k;..\..\src\cpu\i8039;..\..\src\cpu\konami;..\..\src\cpu\hd6309;..\..\src\cpu\h6280;..\..\src\cpu\arm7;..\..\src\cpu\arm;..\..\src\cpu\g65816;..\..\src\cpu\spc700;..\..\src\cpu\i8051;..\..\src\cpu\tms32010;..\..\src\cpu\tms34010;..\..\src\cpu\i8x41;..\..\src\burn\drv\sega;..\..\src\burn\drv\dataeast;..\..\src\burn\drv\konami;..\..\src\cpu\z180;..\..\src\burn\drv\irem;..\..\src\cpu\upd7810;..\..\src\cpu\v60;..\..\src\cpu\upd7725;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>Default</CompileAs>
+      <PreprocessorDefinitions>BUILD_WIN32;FASTCALL;LSB_FIRST;INLINE=__inline static;INCLUDE_AVI_RECORDING;INCLUDE_LIB_PNGH;C_INLINE=__inline;MAME_INLINE=__inline static;_CRT_SECURE_NO_WARNINGS;WINAPI_FAMILY=WINAPI_FAMILY_DESKTOP_APP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <TreatWarningAsError>false</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;..\..\src\dep\ggpo\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ShowProgress>NotSet</ShowProgress>
+      <AdditionalDependencies>user32.lib;gdi32.lib;comdlg32.lib;comctl32.lib;shell32.lib;winmm.lib;advapi32.lib;setupapi.lib;vfw32.lib;wininet.lib;ggponet.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <SubSystem>Windows</SubSystem>
+      <IgnoreSpecificDefaultLibraries>winspool.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib</IgnoreSpecificDefaultLibraries>
+      <OutputFile>$(SolutionDir)\..\..\build\$(TargetName)$(TargetExt)</OutputFile>
+      <ForceFileOutput>Enabled</ForceFileOutput>
+      <AdditionalOptions>
+      </AdditionalOptions>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <Manifest>
+      <VerboseOutput>false</VerboseOutput>
+    </Manifest>
+    <Xdcmake>
+      <DocumentLibraryDependencies>false</DocumentLibraryDependencies>
+    </Xdcmake>
+    <ResourceCompile>
+      <AdditionalOptions>
+      </AdditionalOptions>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -1585,56 +1702,22 @@ del build_details.exe
       <OutputFile>..\..\build\$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBuild|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Full</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>generated;..\..\src\dep\libs\zlib;..\..\src\dep\libs\lib7z;..\..\src\dep\libs\libpng;..\..\src\dep\generated;..\..\src\dep\ggpo\include;..\..\src\burner\win32\resource;..\..\src\burn\drv\taito;..\..\src\burn\drv\misc_post90s;..\..\src\burn\devices;..\..\src\intf\audio\win32;..\..\src\intf\audio;..\..\src\intf\;..\..\src\intf\video\scalers;..\..\src\intf\video\win32;..\..\src\intf\video;..\..\src\intf\perfcount\win32;..\..\src\intf\perfcount;..\..\src\intf\input\win32;..\..\src\intf\input;..\..\src\intf\cd\win32;..\..\src\intf\cd;..\..\src\intf;..\..\src\burner\win32;..\..\src\burn\snd;..\..\src\cpu;..\..\src\burner;..\..\src\burn;..\..\src\cpu\z80;..\..\src\cpu\sh2;..\..\src\cpu\s2650;..\..\src\cpu\nec;..\..\src\cpu\m6809;..\..\src\cpu\m6805;..\..\src\cpu\m6800;..\..\src\cpu\m6502;..\..\src\cpu\m68k;..\..\src\cpu\i8039;..\..\src\cpu\konami;..\..\src\cpu\hd6309;..\..\src\cpu\h6280;..\..\src\cpu\arm7;..\..\src\cpu\arm;..\..\src\cpu\g65816;..\..\src\cpu\spc700;..\..\src\cpu\i8051;..\..\src\cpu\tms32010;..\..\src\cpu\tms34010;..\..\src\cpu\i8x41;..\..\src\burn\drv\sega;..\..\src\burn\drv\dataeast;..\..\src\burn\drv\konami;..\..\src\cpu\z180;..\..\src\burn\drv\irem;..\..\src\cpu\upd7810;..\..\src\cpu\v60;..\..\src\cpu\upd7725;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>BUILD_WIN32;FASTCALL;LSB_FIRST;INLINE=__inline static;INCLUDE_LIB_PNGH;INCLUDE_AVI_RECORDING;C_INLINE=__inline;MAME_INLINE=__inline static;_CRT_SECURE_NO_WARNINGS;WINAPI_FAMILY=WINAPI_FAMILY_DESKTOP_APP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalOptions>/arch:SSE</AdditionalOptions>
-      <OmitFramePointers>true</OmitFramePointers>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <PreprocessorDefinitions>BUILD_WIN32;FASTCALL;_DEBUG;FBNEO_DEBUG;LSB_FIRST;INLINE=__inline static;INCLUDE_LIB_PNGH;C_INLINE=__inline;MAME_INLINE=__inline static;_CRT_SECURE_NO_WARNINGS;WINAPI_FAMILY=WINAPI_FAMILY_DESKTOP_APP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <OmitFramePointers>false</OmitFramePointers>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>user32.lib;gdi32.lib;comdlg32.lib;comctl32.lib;shell32.lib;winmm.lib;advapi32.lib;setupapi.lib;vfw32.lib;wininet.lib;ggponet.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;..\..\src\dep\ggpo\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <IgnoreSpecificDefaultLibraries>winspool.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib</IgnoreSpecificDefaultLibraries>
-      <SubSystem>Windows</SubSystem>
-      <OutputFile>$(SolutionDir)\..\..\build\$(TargetName)$(TargetExt)</OutputFile>
-      <Profile>true</Profile>
-    </Link>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
-    <Manifest>
-      <VerboseOutput>false</VerboseOutput>
-    </Manifest>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>src\burn\drivers\taito;src\burn\drivers\misc_post90s;src\burn\devices;src\depend\generated;src\interface\scalers;src\interface\win32\resource;src\interface\win32;src\interface;src\burner\win32\resource;src\burner\win32;src\depend\libs\zlib;src\depend\libs\libpng;src\depend\libs;src\depend\kaillera\client;src\depend\kaillera;src\burn\sound;src\cpu;src\burner;src\burn;src\cpu\z80;src\cpu\sh2;src\cpu\s2650;src\cpu\nec;src\cpu\m6809;src\cpu\m6805;src\cpu\m6800;src\cpu\m6502;src\cpu\m68k;src\cpu\i8039;src\cpu\konami;src\cpu\hd6309;src\cpu\h6280;src\cpu\arm7;src\cpu\arm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>BUILD_WIN32;FASTCALL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ShowProgress>LinkVerbose</ShowProgress>
       <AdditionalDependencies>user32.lib;gdi32.lib;comdlg32.lib;comctl32.lib;shell32.lib;winmm.lib;ole32.lib;shlwapi.lib;advapi32.lib;setupapi.lib;d3d9.lib;d3dx9.lib;dsound.lib;dinput8.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64</AdditionalLibraryDirectories>
-      <Profile>true</Profile>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <OutputFile>..\..\build\$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,5 +1,3 @@
 Debug
-Release
-generated
+Release*
 .vs
-fba_vs2010.vcxproj.user
