@@ -2,6 +2,7 @@
 #include "burner.h"
 #include <moscade.h>
 
+
 int bRunPause = 0;
 int bAltPause = 0;
 
@@ -14,7 +15,7 @@ static bool bMute = false;
 static int nOldAudVolume;
 
 int kNetVersion = NET_VERSION;				// Network version
-int kNetGame = 0;						// Non-zero if network is being used
+int kNetGame = 1;						// Non-zero if network is being used
 int kNetSpectator = 0;			// Non-zero if network replay is active
 int kNetLua = 1;						// Allow lua in network game
 
@@ -650,8 +651,9 @@ int RunMessageLoop()
 										}
 									}
 									if (i) {									
-										if (kNetGame) {
-											QuarkSendChatText(ConvertLPWSTRToLPSTR(EditText));
+										if (kNetGame) {											
+											char* str = gbk_from_wstring(EditText);
+											QuarkSendChatText(str);
 										}
 									}
 									DeActivateChat();

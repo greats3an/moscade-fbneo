@@ -4,13 +4,12 @@
     <LocalDebuggerCommand>$(SolutionDir)\..\..\build\$(TargetName)$(TargetExt)</LocalDebuggerCommand>
     <LocalDebuggerWorkingDirectory>..\..\build</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>
-    </LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>moscade://match,jojobanr1,127.0.0.1:7000@quark-2-1</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LocalDebuggerCommand>$(SolutionDir)\..\..\build\$(TargetName)$(TargetExt)</LocalDebuggerCommand>
     <LocalDebuggerWorkingDirectory>..\..\build</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>"moscade://match,jojobanr1,vault:7000@quark-el59xTq4UDfcTozGgzVbtw==-NyRR4nLJiMaZivZ#k5oymA=="</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>moscade://match,jojobanr1,127.0.0.1:7000@quark-2-1</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

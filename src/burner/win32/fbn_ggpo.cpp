@@ -84,10 +84,15 @@ bool __cdecl ggpo_on_client_event_callback(GGPOClientEvent *info)
 			kNetVersion = strlen(info->u.matchinfo.blurb) > 0 ? atoi(info->u.matchinfo.blurb) : NET_VERSION;
 		}
 		SetBurnFPS(TCHARToANSI(BurnDrvGetText(DRV_NAME), NULL, 0), kNetVersion);
-		TCHAR szUser1[128];
-		TCHAR szUser2[128];
-		VidOverlaySetGameInfo(ANSIToTCHAR(info->u.matchinfo.p1, szUser1, 128), ANSIToTCHAR(info->u.matchinfo.p2, szUser2, 128), kNetSpectator, iRanked, iPlayer);
-		VidSSetGameInfo(ANSIToTCHAR(info->u.matchinfo.p1, szUser1, 128), ANSIToTCHAR(info->u.matchinfo.p2, szUser2, 128), kNetSpectator, iRanked, iPlayer);
+		/* expect such encoding since this will only be sent by ggposrv3*/
+		TCHAR szUser1[128] = { 0 };
+		wcscpy_s(szUser1,decode_msg(info->u.matchinfo.p1));
+		TCHAR szUser2[128] = { 0 };
+		wcscpy_s(szUser2, decode_msg(info->u.matchinfo.p2));
+
+		dprintf(_T("** P1 ：%s , P2 : %s\n"), szUser1, szUser2);
+		VidOverlaySetGameInfo(szUser1, szUser2 , kNetSpectator, iRanked, iPlayer);
+		VidSSetGameInfo(szUser1, szUser2 , kNetSpectator, iRanked, iPlayer);
 		break;
 	}
 
@@ -98,14 +103,20 @@ bool __cdecl ggpo_on_client_event_callback(GGPOClientEvent *info)
 
 	case GGPOCLIENT_EVENTCODE_CHAT:
 		if (strlen(info->u.chat.text) > 0) {
-			TCHAR szUser[128];
-			TCHAR szText[1024];
-			ANSIToTCHAR(info->u.chat.username, szUser, 128);
-			ANSIToTCHAR(info->u.chat.text, szText, 1024);
+			TCHAR szUser[128] = { 0 };
+			TCHAR szText[128] = { 0 };			
+			wcscpy_s(szUser, ANSIToTCHAR(info->u.chat.username,NULL,0));
+			if (wcscmp(szUser, _T("System")) == 0){
+				// messages emitted by ggponet / server			
+				wcscpy_s(szText, ANSIToTCHAR(info->u.chat.text, NULL, 0));				 
+			} else {
+				// chat message, encoded by gbk w/ halfstring				
+				wcscpy_s(szUser, decode_msg(info->u.chat.username));
+				wcscpy_s(szText, decode_msg(info->u.chat.text));
+			}
+			dprintf(_T("** %s : %s\n"), szUser, szText);
 			VidOverlayAddChatLine(szUser, szText);
-			TCHAR szTemp[128];
-			_sntprintf(szTemp, 128, _T("«%.32hs» "), info->u.chat.username);
-			VidSAddChatLine(szTemp, 0XFFA000, ANSIToTCHAR(info->u.chat.text, NULL, 0), 0xEEEEEE);
+			VidSAddChatLine(szUser, 0XFFA000, szText, 0xEEEEEE);
 		}
 		break;
 
@@ -483,7 +494,7 @@ void QuarkInit(TCHAR* tconnect)
 		}
 		memset(connect, 0, sizeof connect);
 		if (strncmp(mode, "match", strlen("match")) == 0) {
-			sprintf(connect, "quark:served,%s,%s,%s,0,1",game,quark,dport);
+			sprintf(connect, "quark:served,%s,%s,%s,0,10",game,quark,dport);
 		} else {
 			sprintf(connect, "quark:stream,%s,%s,%s",game,quark,dport);
 		}				
@@ -649,7 +660,13 @@ void QuarkSendChatCmd(char *text, char cmd)
 {
 	char buffer[1024]; // command chat
 	buffer[0] = cmd;
-	strcpy(&buffer[1], text);
+	strcpy(&buffer[1], to_halves(text));
+	dprintf(_T("** Sending chat: "));
+	for (int i = 0; i < sizeof(buffer); i++) {
+		dprintf(_T("\\x%02x "), buffer[i]);
+		if (buffer[i] == 0) break;
+	}
+	dprintf(_T("\n"));
 	ggpo_client_chat(ggpo, buffer);
 }
 

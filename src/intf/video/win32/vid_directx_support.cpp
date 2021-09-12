@@ -664,8 +664,8 @@ static int nPlayer = 0;
 static int nScore1 = 0;
 static int nScore2 = 0;
 static int nShowStats = 0;
-static TCHAR szPlayer1[64] = { 0 };
-static TCHAR szPlayer2[64] = { 0 };
+static TCHAR szPlayer1[128] = { 0 };
+static TCHAR szPlayer2[128] = { 0 };
 static TCHAR szSpectatorCount[256] = { 0 };
 static TCHAR szMatchInfo[256] = { 0 };
 static TCHAR szPing[256] = { 0 };
@@ -2042,7 +2042,7 @@ INT32 VidSShowStats(INT32 show)
 int VidSAddChatLine(const TCHAR* pID, int nIDRGB, const TCHAR* pMain, int nMainRGB)
 {
 	if (pID || pMain) {
-		if (!_tcscmp(pID, _T("«Command» "))) {
+		if (!_tcscmp(pID, _T("Command"))) {
 			return 0;
 		}
 
