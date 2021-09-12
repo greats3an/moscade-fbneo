@@ -6,7 +6,7 @@
 int bRunPause = 0;
 int bAltPause = 0;
 
-int bAlwaysDrawFrames = 0;
+int bAlwaysDrawFrames = 1;
 
 static bool bShowFPS = false;
 static unsigned int nDoFPS = 0;
@@ -15,7 +15,7 @@ static bool bMute = false;
 static int nOldAudVolume;
 
 int kNetVersion = NET_VERSION;				// Network version
-int kNetGame = 1;						// Non-zero if network is being used
+int kNetGame = 0;						// Non-zero if network is being used
 int kNetSpectator = 0;			// Non-zero if network replay is active
 int kNetLua = 1;						// Allow lua in network game
 

@@ -4555,4 +4555,13 @@
       <Filter>ggpo</Filter>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\src\burner\win32\resource\splash.bmp" />
+    <Image Include="..\..\src\burner\win32\resource\fba.ico" />
+    <Image Include="..\..\src\burner\win32\resource\TV Plus.ico" />
+    <Image Include="..\..\src\burner\win32\resource\TV Minus.ico" />
+    <Image Include="..\..\src\burner\win32\resource\TV Not Working.ico" />
+    <Image Include="..\..\src\burner\win32\resource\TV Not Found.ico" />
+    <Image Include="..\..\src\burner\win32\resource\TV Not Found Non Essential.ico" />
+  </ItemGroup>
 </Project>

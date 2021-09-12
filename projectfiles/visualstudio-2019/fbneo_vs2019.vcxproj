@@ -1537,6 +1537,15 @@ del build_details.exe
     <ResourceCompile Include="..\..\src\burner\win32\version.rc" />
     <ResourceCompile Include="..\..\src\dep\libs\lib7z\7zVersion.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\src\burner\win32\resource\fba.ico" />
+    <Image Include="..\..\src\burner\win32\resource\splash.bmp" />
+    <Image Include="..\..\src\burner\win32\resource\TV Minus.ico" />
+    <Image Include="..\..\src\burner\win32\resource\TV Not Found Non Essential.ico" />
+    <Image Include="..\..\src\burner\win32\resource\TV Not Found.ico" />
+    <Image Include="..\..\src\burner\win32\resource\TV Not Working.ico" />
+    <Image Include="..\..\src\burner\win32\resource\TV Plus.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{86D06C32-A849-4988-A176-A38D014C36C1}</ProjectGuid>
     <RootNamespace>fbneo_vs2019</RootNamespace>
