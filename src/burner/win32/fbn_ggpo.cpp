@@ -25,6 +25,10 @@ static int iSeed = 0;
 
 const int ggpo_state_header_size = 6 * sizeof(int);
 
+bool DisableForNetplay(){
+	return kNetGame && kNetLua;
+}
+
 int GetHash(const char *id, int len)
 {
 	unsigned int hash = 1315423911;

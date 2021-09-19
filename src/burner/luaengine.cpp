@@ -213,6 +213,8 @@ int FBA_LuaFrameSkip() {
 
 // fba.hardreset()
 static int fba_hardreset(lua_State *L) {
+	if (DisableForNetplay()) return 1;
+
 	StartFromReset(NULL);
 	return 1;
 }
@@ -263,6 +265,8 @@ static int fba_sourcename(lua_State *L) {
 //   turbo renders only a few frames in order to speed up emulation,
 //   maximum renders no frames
 static int fba_speedmode(lua_State *L) {
+	if (DisableForNetplay()) return 1;
+
 	const char *mode = luaL_checkstring(L,1);
 
 	if (strcmp(mode, "normal")==0) {
@@ -301,6 +305,7 @@ static int fba_frameadvance(lua_State *L) {
 //  This function MAY be called from a non-frame boundary, but the frame
 //  finishes executing anyways. In this case, the function returns immediately.
 static int fba_pause(lua_State *L) {
+	if (DisableForNetplay()) return lua_yield(L,1);
 	SetPauseMode(1);
 	speedmode = SPEED_NORMAL;
 
@@ -312,6 +317,8 @@ static int fba_pause(lua_State *L) {
 
 // fba.unpause()
 static int fba_unpause(lua_State *L) {
+	if (DisableForNetplay()) return lua_yield(L, 1);
+
 	SetPauseMode(0);
 
 	return lua_yield(L, 0);
@@ -1024,18 +1031,22 @@ static int memory_readbyterange(lua_State *L) {
 
 static int memory_writebyte(lua_State *L)
 {
+	/* Disabled for netplay */
+	if (DisableForNetplay()) return 1;
 	WriteValueAtHardwareAddress(luaL_checkinteger(L,1), luaL_checkinteger(L,2),1,0);
 	return 0;
 }
 
 static int memory_writeword(lua_State *L)
 {
+	if (DisableForNetplay()) return 1;
 	WriteValueAtHardwareAddress(luaL_checkinteger(L,1), luaL_checkinteger(L,2),2,is_little_endian(L,3));
 	return 0;
 }
 
 static int memory_writedword(lua_State *L)
 {
+	if (DisableForNetplay()) return 1;
 	WriteValueAtHardwareAddress(luaL_checkinteger(L,1), luaL_checkinteger(L,2),4,is_little_endian(L,3));
 	return 0;
 }
@@ -1242,6 +1253,7 @@ static int memory_getregister(lua_State *L)
 //DEFINE_LUA_FUNCTION(memory_setregister, "cpu_dot_registername_string,value")
 static int memory_setregister(lua_State *L)
 {
+	if (DisableForNetplay()) return 1;
 	const char* qualifiedRegisterName = luaL_checkstring(L,1);
 	unsigned long value = (unsigned long)(luaL_checkinteger(L,2));
 	lua_settop(L,0);
@@ -1341,6 +1353,7 @@ static int joypad_getup(lua_State *L)
 //   frame advance. The table should have the right 
 //   keys (no pun intended) set.
 static int joypad_set(lua_State *L) {
+	if (DisableForNetplay()) return 1;
 	struct GameInp* pgi = NULL;
 	unsigned int i;
 

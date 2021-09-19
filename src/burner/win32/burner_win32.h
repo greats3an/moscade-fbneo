@@ -237,7 +237,7 @@ extern int kNetVersion;
 extern int kNetGame;
 extern int kNetSpectator;
 extern int kNetLua;
-
+extern bool DisableForNetplay();
 int RunIdleDelay(int frames);
 int RunIdle();
 int RunFrame(int bDraw, int bPause, int bInput);
