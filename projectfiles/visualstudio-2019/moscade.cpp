@@ -3,41 +3,48 @@
 #include <windows.h>
 #include <tchar.h>
 #include <burner.h>
-
+#include <wincrypt.h>
 using namespace std;
 
-/* The following functions are added because we are running in codepage 936*/
 #define CP_GBK 936
-#define NONNUL 0xF + 1 /* 0x00 -> 0x10 */
 
-char* from_halves(const char* src) {
-	int len = strlen(src);
-	char* result = new char[len / 2 + 1];
-	dprintf(_T("** RECV Length : %d\n** Message:"),len);
-	memset(result, 0, len / 2 + 1);
-	for (int i = 0; i < len; i+=2) {
-		dprintf(_T("0x%x 0x%x "), src[i],src[i+1]);
-		result[i / 2] = (src[i] == NONNUL ? 0 : src[i]) << 4 | (src[i + 1] == NONNUL ? 0 : src[i + 1]);
-	}	
+#pragma comment(lib, "crypt32.lib")
+/* Decodes BASE64 ANSI string, returns NULL if failed. */
+char* from_base64(const char* src) {
+	DWORD len = 0;
+
+	CryptStringToBinaryA(src, 0, CRYPT_STRING_BASE64, NULL, &len, NULL, NULL);
+
+	BYTE* buffer = new BYTE[len + 1];
+
+	CryptStringToBinaryA(src, 0, CRYPT_STRING_BASE64, buffer, &len, NULL, NULL);
+
+	if (!len) return NULL;
+
+	char* result = new char[len + 1];
+	memset(result, 0, len + 1);
+	memcpy(result, buffer, len);
 	return result;
 }
-char* to_halves(const char* src) {
-	int len = strlen(src) * 2;
-	char* result = new char[len + 2];
-	dprintf(_T("** SEND Length : %d\n** Message:"), len);
-	memset(result, 0, len + 2);
-	for (int i = 0; i < len; i+=2) {		
-		result[i] = (src[i/2] & 0xf0) >> 4;
-		result[i+1] = src[i/2] & 0xf;		
-		/* strlen() ends when NUL is detected, which when unpacking a non-nul char could lead to misreading
-			we're using a hack to make the fake-NULs out-of-band,so server should deal with this as well
-		*/
-		result[i] = result[i] == 0 ? NONNUL : result[i];
-		result[i + 1] = result[i + 1] == 0 ? NONNUL : result[i + 1];
-		dprintf(_T("0x%x%x (0x%x), "), result[i], result[i + 1], src[i / 2]);		
-	}
+
+/* Encodes BASE64 ANSI string, returns NULL if failed. */
+char* to_base64(const char* src) {
+	DWORD len = strlen(src);
+	BYTE* buffer = new BYTE[len + 1];
+
+	memcpy(buffer, src, len);
+
+	CryptBinaryToStringA(buffer, strlen(src), CRYPT_STRING_BASE64, NULL, &len);
+
+	if (!len) return NULL;
+
+	char* result = new char[len + 1];
+	memset(result, 0, len + 1);
+	CryptBinaryToStringA(buffer, strlen(src), CRYPT_STRING_BASE64, result, &len);
+
 	return result;
 }
+
 WCHAR* wstring_from_gbk(const char* gbkstring)
 {
 	int char_count;
@@ -61,7 +68,6 @@ char* gbk_from_wstring(const WCHAR* wstring)
 	return result;
 }
 
-
 char* GetGGPONetHost() {
 	fstream dll("ggponet.dll", ios::binary | ios::in);
 	char buffer[0x12] = { 0 };
@@ -70,8 +76,13 @@ char* GetGGPONetHost() {
 	return buffer;
 }
 
+char* encode_msg(WCHAR* src) {
+	char* encoded = gbk_from_wstring(src);
+	return to_base64(encoded);
+}
+
 WCHAR* decode_msg(char* src) {
-	char* full = from_halves(src);
+	char* full = from_base64(src);
 	WCHAR* decoded = wstring_from_gbk(full);
 	return decoded;
 }
@@ -80,8 +91,23 @@ void SpawnOverwriteProcess(LPCWSTR mcade) {
 	ShellExecute(NULL, L"open", L"externalwriter.exe", mcade, NULL, SW_SHOWNORMAL);
 }
 
-bool InstallHandler() {
-	/* Creates a temporary .reg file,and tries to register it via user prompts*/
+
+bool MOSCadeCheckIsHandlerInstalled() {
+	TCHAR buffer[1024] = { 0 }; DWORD len = 1024;
+	LSTATUS stat = RegGetValue(HKEY_CLASSES_ROOT, _T("moscade\\shell\\open\\command"), NULL, RRF_RT_ANY, NULL, buffer, &len);
+	if (stat != 0) return false;
+	// To check if the executable is ours. If not, we still flag the installation invalid.	
+	wchar_t path[MAX_PATH];
+	GetModuleFileNameW(NULL, path, MAX_PATH);
+	int i = 1;
+	bool flag = true;
+	while (buffer[i] != NULL && path[i - 1] != NULL)
+		if (buffer[i] != path[i++ - 1]) { flag = false; break; }
+	return flag;
+}
+
+bool MOSCadePromptInstallHandler() {
+	/* Creates a temporary .reg file,and prompts the user to install.*/	
 	wchar_t buffer[MAX_PATH];
 	wchar_t dbqoute[MAX_PATH];
 	GetModuleFileNameW(NULL, buffer, MAX_PATH);
@@ -109,3 +135,5 @@ bool InstallHandler() {
 	ShellExecute(NULL, L"open", L"register.reg", NULL, NULL, SW_SHOWNORMAL);
 	return true;
 }
+
+

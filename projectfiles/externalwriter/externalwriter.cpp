@@ -4,7 +4,24 @@
 #include <iostream>
 #include <fstream>
 #include <windows.h>
+#include <tchar.h>
 using namespace std;
+
+char* TCHARToANSI(const TCHAR* pszInString, char* pszOutString, int nOutSize)
+{
+
+	static char szStringBuffer[1024];
+	memset(szStringBuffer, 0, sizeof(szStringBuffer));
+
+	char* pszBuffer = pszOutString ? pszOutString : szStringBuffer;
+	int nBufferSize = pszOutString ? nOutSize * 2 : sizeof(szStringBuffer);
+
+	if (WideCharToMultiByte(CP_ACP, 0, pszInString, -1, pszBuffer, nBufferSize, NULL, NULL)) {
+		return pszBuffer;
+	}
+
+	return NULL;
+}
 
 TCHAR* ANSIToTCHAR(const char* pszInString, TCHAR* pszOutString, int nOutSize)
 {
@@ -23,23 +40,23 @@ TCHAR* ANSIToTCHAR(const char* pszInString, TCHAR* pszOutString, int nOutSize)
 int main(int argc, char* argv[])
 {
 	char mode[128], game[128], host[128], dport[128], quark[128];
-	#pragma warning(suppress : 4996)
+#pragma warning(suppress : 4996)
 	sscanf(argv[1], "moscade://%[^,],%[^,],%[^:]:%[^@]@%s", mode, game, host, dport, quark);
 
-	cout << "Overwritting with " << host;	
+	cout << "Overwritting with " << host;
 	cout << "\nWaiting for main executable to exit...\n";
 	char buffer[0x12] = { 0 };
 	strcpy_s(buffer, host);
 	while (true) {
 		ofstream dll("ggponet.dll", ios::binary | ios::out | ios::in);
 		dll.seekp(0x32152);
-		dll.write(buffer, 0x12);		
+		dll.write(buffer, 0x12);
 		if (!dll.bad()) break;
 		cout << dll.bad() << "...";
 		Sleep(1000);
 	}
 	cout << "Launching moscadefbneo.exe";
-	ShellExecute(NULL, L"open", L"moscadefbneo.exe", ANSIToTCHAR(argv[1],NULL,0), NULL, SW_SHOWDEFAULT);
+	ShellExecute(NULL, L"open", L"moscadefbneo.exe", ANSIToTCHAR(argv[1], NULL, 0), NULL, SW_SHOWDEFAULT);
 	exit(0);
 }
 

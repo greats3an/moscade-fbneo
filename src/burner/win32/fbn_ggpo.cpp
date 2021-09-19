@@ -57,22 +57,22 @@ bool __cdecl ggpo_on_client_event_callback(GGPOClientEvent *info)
 	switch (info->code)
 	{
 	case GGPOCLIENT_EVENTCODE_CONNECTING:
-		VidOverlaySetSystemMessage(_T("Connecting..."));
+		VidOverlaySetSystemMessage(_T("连接中..."));
 		VidSSetSystemMessage(_T("Connecting..."));
 		break;
 
 	case GGPOCLIENT_EVENTCODE_CONNECTED:
-		VidOverlaySetSystemMessage(_T("Connected"));
-		VidSSetSystemMessage(_T("Connected"));
+		VidOverlaySetSystemMessage(_T("已连接挑战调谐端"));
+		VidSSetSystemMessage(_T("Connected to challenge coordinator."));
 		break;
 
 	case GGPOCLIENT_EVENTCODE_RETREIVING_MATCHINFO:
-		VidOverlaySetSystemMessage(_T("Retrieving Match Info..."));
+		VidOverlaySetSystemMessage(_T("下载比赛信息，请稍后..."));
 		VidSSetSystemMessage(_T("Retrieving Match Info..."));
 		break;
 
 	case GGPOCLIENT_EVENTCODE_DISCONNECTED:
-		VidOverlaySetSystemMessage(_T("Disconnected!"));
+		VidOverlaySetSystemMessage(_T("失去连接!"));
 		VidSSetSystemMessage(_T("Disconnected!"));
 		QuarkFinishReplay();
 		break;
@@ -104,11 +104,14 @@ bool __cdecl ggpo_on_client_event_callback(GGPOClientEvent *info)
 	case GGPOCLIENT_EVENTCODE_CHAT:
 		if (strlen(info->u.chat.text) > 0) {
 			TCHAR szUser[128] = { 0 };
-			TCHAR szText[128] = { 0 };			
+			TCHAR szText[1024] = { 0 };			
 			wcscpy_s(szUser, ANSIToTCHAR(info->u.chat.username,NULL,0));
 			if (wcscmp(szUser, _T("System")) == 0){
-				// messages emitted by ggponet / server			
-				wcscpy_s(szText, ANSIToTCHAR(info->u.chat.text, NULL, 0));				 
+				// messages emitted by ggponet / server (legacy)
+				// We don't really need this though, as it's only outputted by ggponet
+				// and my implmentation doesn't use this nick
+				// wcscpy_s(szText, ANSIToTCHAR(info->u.chat.text, NULL, 0));				 
+				break; 
 			} else {
 				// chat message, encoded by gbk w/ halfstring				
 				wcscpy_s(szUser, decode_msg(info->u.chat.username));
@@ -142,13 +145,13 @@ bool __cdecl ggpo_on_event_callback(GGPOEvent *info)
 	}
 	switch (info->code) {
 	case GGPO_EVENTCODE_CONNECTED_TO_PEER:
-		VidOverlaySetSystemMessage(_T("Connected to Peer"));
+		VidOverlaySetSystemMessage(_T("尝试与对手建立连接..."));
 		VidSSetSystemMessage(_T("Connected to Peer"));
 		break;
 
 	case GGPO_EVENTCODE_SYNCHRONIZING_WITH_PEER:
 		//_stprintf(status, _T("Synchronizing with Peer (%d/%d)..."), info->u.synchronizing.count, info->u.synchronizing.total);
-		VidOverlaySetSystemMessage(_T("Synchronizing with Peer..."));
+		VidOverlaySetSystemMessage(_T("重新同步"));
 		VidSSetSystemMessage(_T("Synchronizing with Peer..."));
 		break;
 
@@ -163,12 +166,13 @@ bool __cdecl ggpo_on_event_callback(GGPOEvent *info)
 	}
 
 	case GGPO_EVENTCODE_DISCONNECTED_FROM_PEER:
-		VidOverlaySetSystemMessage(_T("Disconnected from Peer"));
+		VidOverlaySetSystemMessage(_T("你与对手已断开连接！"));		
 		VidSSetSystemMessage(_T("Disconnected from Peer"));
 		if (bReplayRecording) {
 			AviStop();
 			bMediaExit = true;
 		}
+		SetPauseMode(1);
 		break;
 
 	case GGPO_EVENTCODE_TIMESYNC:
@@ -195,13 +199,13 @@ bool __cdecl ggpo_begin_game_callback(char *name)
 		if (FindFirstFile(tfilename, &fd) != INVALID_HANDLE_VALUE) {
 			// Load our save-state file (freeplay, event mode, etc.)
 			BurnStateLoad(tfilename, 1, &DrvInitCallback);
-			// detector
-			DetectorLoad(name, false, iSeed);
 			// if playing a direct game, we never get match information, so put anonymous
 			if (bDirect) {
 				VidOverlaySetGameInfo(_T("Player1#0,0"), _T("Player2#0,0"), false, iRanked, iPlayer);
 				VidSSetGameInfo(_T("Player1#0,0"), _T("Player2#0,0"), false, iRanked, iPlayer);
 			}
+			// detector			
+			DetectorLoad(name, false, iSeed);
 			return 0;
 		}
 	}
@@ -211,13 +215,13 @@ bool __cdecl ggpo_begin_game_callback(char *name)
 	if (FindFirstFile(tfilename, &fd) != INVALID_HANDLE_VALUE) {
 		// Load our save-state file (freeplay, event mode, etc.)
 		BurnStateLoad(tfilename, 1, &DrvInitCallback);
-		// load detector
-		DetectorLoad(name, false, iSeed);
 		// if playing a direct game, we never get match information, so put anonymous
 		if (bDirect) {
 			VidOverlaySetGameInfo(_T("Player1#0,0"), _T("Player2#0,0"), false, iRanked, iPlayer);
 			VidSSetGameInfo(_T("Player1#0,0"), _T("Player2#0,0"), false, iRanked, iPlayer);
 		}
+		// detector			
+		DetectorLoad(name, false, iSeed);
 		return 0;
 	}
 
@@ -227,14 +231,14 @@ bool __cdecl ggpo_begin_game_callback(char *name)
 		nBurnDrvActive = i;
 		if ((_tcscmp(BurnDrvGetText(DRV_NAME), tname) == 0) && (!(BurnDrvGetFlags() & BDF_BOARDROM))) {
 			MediaInit();
-			DrvInit(i, true);
-			// load game detector
-			DetectorLoad(name, false, iSeed);
+			DrvInit(i, true);		
 			// if playing a direct game, we never get match information, so play anonymous
 			if (bDirect) {
 				VidOverlaySetGameInfo(_T("player 1#0,0"), _T("player 2#0,0"), false, iRanked, iPlayer);
 				VidSSetGameInfo(_T("Player1#0,0"), _T("Player2#0,0"), false, iRanked, iPlayer);
 			}
+			// detector			
+			DetectorLoad(name, false, iSeed);
 			return 1;
 		}
 	}
@@ -481,28 +485,22 @@ void QuarkInit(TCHAR* tconnect)
 
 	/*@moscade */
 	if (strncmp(connect, "moscade://", strlen("moscade://")) == 0) {
-		char mode[128], game[128], host[128], dport[128], quark[128];		
-		sscanf(connect, "moscade://%[^,],%[^,],%[^:]:%[^@]@%s", mode, game, host,dport,quark);		
-		if (strcmp(GetGGPONetHost(), host) != 0) {
+		MOSCadeURI uri; uri.from_uri(connect);
+
+		if (strcmp(GetGGPONetHost(), uri.host) != 0) {
 			dprintf(_T("** Overwriting host:"));
-			dprintf(ANSIToTCHAR(host, NULL, 0));
+			dprintf(ANSIToTCHAR(uri.host, NULL, 0));
 			SpawnOverwriteProcess(ANSIToTCHAR(connect, NULL, 0));
 			exit(0); // despawns our process & lets overwritter do the job
 		}
 		else {
 			dprintf(_T("** Host match! Procceding to connect.\n"));
 		}
-		memset(connect, 0, sizeof connect);
-		if (strncmp(mode, "match", strlen("match")) == 0) {
-			sprintf(connect, "quark:served,%s,%s,%s,0,10",game,quark,dport);
-		} else {
-			sprintf(connect, "quark:stream,%s,%s,%s",game,quark,dport);
-		}				
-		dprintf(_T("\n** Connecting via moscade:// protocol\n** Netplay LUA is enabled.\n"));
+		dprintf(_T("\n** Connecting via moscade:// protocol\n"));
 		dprintf(_T("** MOSCade quark: "));
-		dprintf(ANSIToTCHAR(quark,NULL,0));		
+		dprintf(ANSIToTCHAR(uri.quark,NULL,0));		
 		dprintf(_T("\n"));
-		kNetLua = 1;			
+		return QuarkInit(ANSIToTCHAR(uri.to_quark(),NULL,0));
 	}
 	
 	ggpo_init();
@@ -518,6 +516,7 @@ void QuarkInit(TCHAR* tconnect)
 
 	if (strncmp(connect, "quark:served", strlen("quark:served")) == 0) {
 		sscanf(connect, "quark:served,%[^,],%[^,],%d,%d,%d", game, quarkid, &port, &delay, &ranked);
+		kNetLua = 1;
 		iRanked = ranked;
 		iPlayer = atoi(&quarkid[strlen(quarkid) - 1]);
 		iDelay = delay;
@@ -655,18 +654,12 @@ void QuarkSendChatText(char *text)
 {
 	QuarkSendChatCmd(text, 'T');
 }
-
+/* Sends command to server. Where commands are encoded w/ base-64 first*/
 void QuarkSendChatCmd(char *text, char cmd)
 {
 	char buffer[1024]; // command chat
 	buffer[0] = cmd;
-	strcpy(&buffer[1], to_halves(text));
-	dprintf(_T("** Sending chat: "));
-	for (int i = 0; i < sizeof(buffer); i++) {
-		dprintf(_T("\\x%02x "), buffer[i]);
-		if (buffer[i] == 0) break;
-	}
-	dprintf(_T("\n"));
+	strcpy(&buffer[1], to_base64(text));
 	ggpo_client_chat(ggpo, buffer);
 }
 

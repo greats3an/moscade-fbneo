@@ -4,12 +4,20 @@
     <LocalDebuggerCommand>$(SolutionDir)\..\..\build\$(TargetName)$(TargetExt)</LocalDebuggerCommand>
     <LocalDebuggerWorkingDirectory>..\..\build</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>moscade://match,jojobanr1,127.0.0.1:7000@quark-2-1</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>
+    </LocalDebuggerCommandArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test|Win32'">
+    <LocalDebuggerCommand>$(SolutionDir)\..\..\build\$(TargetName)$(TargetExt)</LocalDebuggerCommand>
+    <LocalDebuggerWorkingDirectory>..\..\build</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerCommandArguments>quark:debugdetector,jojobanr1</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LocalDebuggerCommand>$(SolutionDir)\..\..\build\$(TargetName)$(TargetExt)</LocalDebuggerCommand>
     <LocalDebuggerWorkingDirectory>..\..\build</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>moscade://match,jojobanr1,127.0.0.1:7000@quark-2-1</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>
+    </LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

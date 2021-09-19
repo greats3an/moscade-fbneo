@@ -5,7 +5,7 @@
 #include "vid_memorybuffer.h"
 #include "vid_detector.h"
 #include <d3dx9.h>
-
+#include <moscade.h>
 //#define PRINT_DEBUG_INFO
 //#define TEST_OVERLAY
 //#define TEST_VERSION				L"RC7 v3"
@@ -18,6 +18,7 @@
 #define INFO_FRAMES					150
 #define WARNING_FRAMES				180
 #define CHAT_LINES					7
+#define CHAT_FRAMES					200
 #define CHAT_FRAMES					200
 #define CHAT_FRAMES_EXT 			350
 #define START_FRAMES				300
@@ -335,7 +336,7 @@ void GameDetector::Load(const char *game)
 	char file[MAX_PATH];
 	sprintf(file, "detector\\%s.inf", game);
 	bool loaded = false;
-	if (LoadMemoryBufferDetector(buffer, file, debug_mode)) {
+	if (LoadMemoryBufferDetector(buffer, file, true)) {
 		const char *ini = buffer.data;
 		const char *end = buffer.data + buffer.len;
 		while (ini > 0 && ini < end) {
@@ -696,57 +697,6 @@ void DetectorLoad(const char *game, bool debug, int seed)
 	}
 }
 
-void DetectorUpdate()
-{
-	frame_time++;
-
-	// warnings
-	frame_warning--;
-	if (frame_warning < 0) {
-		frame_warning = 0;
-	}
-	frame_warning_sent--;
-	if (frame_warning_sent < 0) {
-		frame_warning_sent = 0;
-	}
-
-	bool detector_enabled = gameDetector.run_detector && !gameDetector.frame_end && (gameDetector.state != GameDetector::ST_NONE);
-
-	// run game detector
-	if (detector_enabled) {
-		gameDetector.Update();
-		// character detector
-		int char1 = gameDetector.dChar1.IsOk() ? gameDetector.dChar1.memory_current : -1;
-		int char2 = gameDetector.dChar2.IsOk() ? gameDetector.dChar2.memory_current : -1;
-		if (char1 >= 0) {
-			wcscpy(gameDetector.char1, gameDetector.characters[gameDetector.dChar1.memory_current]);
-		}
-		if (char2 >= 0) {
-			wcscpy(gameDetector.char2, gameDetector.characters[gameDetector.dChar2.memory_current]);
-		}
-		// in ranked games, if there is a winner send to server and terminate game if it was a FTx
-		if (game_ranked && !game_spectator && gameDetector.winner != 0) {
-			char temp[32];
-			// send ReceiveWinner message
-			sprintf(temp, "%d,%d,%d,%d,%d", gameDetector.winner, gameDetector.score1, gameDetector.score2, char1, char2);
-			QuarkSendChatCmd(temp, 'W');
-			if (gameDetector.frame_end) {
-				VidOverlayAddChatLine(_T("System"), _T("Ranked game finished"));
-			}
-		}
-	}
-
-	// finish quark
-	if (gameDetector.frame_end && (frame_time - gameDetector.frame_end) > END_FRAMES) {
-		gameDetector.frame_end = INT_MAX;
-		QuarkEnd();
-	}
-
-	// save info if needed
-	VidOverlaySaveInfo();
-}
-
-
 void DetectorSetState(int state, int score1, int score2, int start1, int start2)
 {
 	if (state == GameDetector::ST_WAIT_START) {
@@ -828,8 +778,8 @@ struct Sprite
 
 	void Init(const wchar_t *file, CDynRender* render, unsigned color = 0xffffffff, unsigned int w = 0, unsigned int h = 0);
 	void End();
-	void Render(float x, float y, float scale, unsigned int anchor = TOPLEFT);
-	void Render(float x, float y, float w, float h, float u0, float v0, float u1, float v1);
+	void Render(float x, float y, float scale, unsigned int anchor = TOPLEFT,bool bypass = false);
+	void Render(float x, float y, float w, float h, float u0, float v0, float u1, float v1, bool bypass = false);
 };
 
 void Sprite::Init(const wchar_t *file, CDynRender* render, unsigned int color, unsigned int w, unsigned int h)
@@ -844,16 +794,17 @@ void Sprite::End()
 	RELEASE(texture);
 }
 
-void Sprite::Render(float x, float y, float scale, unsigned int anchor)
+void Sprite::Render(float x, float y, float scale, unsigned int anchor, bool bypass)
 {
 	if (!texture) {
 		return;
 	}
 
 	renderer->SetTexture(texture);
-
-	x = FPX(x);
-	y = FPY(y);
+	if (!bypass){
+		x = FPX(x);
+		y = FPY(y);
+	}
 	float w = FS(width * scale);
 	float h = FS(height * scale);
 	float u0 = 0.5f / w;
@@ -887,17 +838,17 @@ void Sprite::Render(float x, float y, float scale, unsigned int anchor)
 	renderer->VtxPos(x, y + h, 0);
 }
 
-void Sprite::Render(float x, float y, float w, float h, float u0, float v0, float u1, float v1)
+void Sprite::Render(float x, float y, float w, float h, float u0, float v0, float u1, float v1, bool bypass)
 {
 	if (!texture) {
 		return;
 	}
 
 	renderer->SetTexture(texture);
-
-	x = FPX(x);
-	y = FPY(y);
-
+	if (!bypass){
+		x = FPX(x);
+		y = FPY(y);
+	}
 	// add sprite quad
 	renderer->VtxColor(col);
 	renderer->VtxTexCoord(u0, v0);
@@ -921,6 +872,99 @@ struct PlayerInfo {
 	Text character;
 	int rank;
 };
+
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Character Portrait (placeholder, may be implemented)
+//------------------------------------------------------------------------------------------------------------------------------
+struct Portrait {
+	TCHAR p1char[64] = { 0 };
+	TCHAR p2char[64] = { 0 };
+
+	Sprite p1Spr;
+	Sprite p2Spr;
+
+	void Render()
+	{		
+		
+	}
+
+	void Init(CDynRender *renderer) {
+		
+	}
+
+	void setP1Char(TCHAR* name) {				
+		memcpy(p1char, name, 64);
+	}
+	void setP2Char(TCHAR* name) {
+		memcpy(p1char, name, 64);
+	}
+};
+Portrait portrait;
+
+TCHAR lastMatchStats[128] = { 0 };
+
+void DetectorUpdate()
+{
+	frame_time++;
+
+	// warnings
+	frame_warning--;
+	if (frame_warning < 0) {
+		frame_warning = 0;
+	}
+	frame_warning_sent--;
+	if (frame_warning_sent < 0) {
+		frame_warning_sent = 0;
+	}
+
+	bool detector_enabled = gameDetector.run_detector && !gameDetector.frame_end && (gameDetector.state != GameDetector::ST_NONE);
+
+	// run game detector
+	if (detector_enabled) {
+		gameDetector.Update();
+		// character detector
+		int char1 = gameDetector.dChar1.IsOk() ? gameDetector.dChar1.memory_current : -1;
+		int char2 = gameDetector.dChar2.IsOk() ? gameDetector.dChar2.memory_current : -1;
+		if (char1 >= 0) {
+			wcscpy(gameDetector.char1, gameDetector.characters[gameDetector.dChar1.memory_current]);
+			portrait.setP1Char(gameDetector.char1);
+		}
+		if (char2 >= 0) {
+			wcscpy(gameDetector.char2, gameDetector.characters[gameDetector.dChar2.memory_current]);
+			portrait.setP2Char(gameDetector.char2);
+		}
+		// in ranked games, if there is a winner send to server and terminate game if it was a FTx
+		if (game_ranked && !game_spectator && gameDetector.winner != 0) {
+			char temp[32];
+			// send ReceiveWinner message
+			sprintf(temp, "%d,%d,%d,%d,%d", gameDetector.winner, gameDetector.score1, gameDetector.score2, char1, char2);
+			QuarkSendChatCmd(temp, 'W');
+			if (gameDetector.frame_end) {
+				VidOverlayAddChatLine(_T("System"), _T("Ranked game finished"));
+			}
+		}
+		// as a player, send the match info to the server via quarkcmd since savestates pushes are too expensive
+		if (game_ranked && !game_spectator && frame_time % 16 == 0) { // check limit
+			TCHAR temp[128] = { 0 };
+			wsprintf(temp, _T("%d,%d,%s,%s"), gameDetector.score1, gameDetector.score2, gameDetector.char1, gameDetector.char2);
+			if (wcscmp(temp, lastMatchStats) != 0) {
+				memcpy(lastMatchStats, temp, 128);
+				QuarkSendChatCmd(gbk_from_wstring(lastMatchStats), 'M');
+			}
+		}
+	}
+
+	// finish quark
+	if (gameDetector.frame_end && (frame_time - gameDetector.frame_end) > END_FRAMES) {
+		gameDetector.frame_end = INT_MAX;
+		QuarkEnd();
+	}
+
+	// save info if needed
+	VidOverlaySaveInfo();
+}
+
 
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -962,6 +1006,7 @@ void VidOverlayInit(IDirect3DDevice9Ex *device)
 	scanlines_spr.Init(_T("ui/scanlines.png"), &renderer, 0xFF000000);
 	background_spr.Init(_T("ui/background.png"), &renderer, 0xFFFFFFFF);
 	spectators_spr.Init(_T("ui/spectators.png"), &renderer);
+	portrait.Init(&renderer);
 	for (int i = 0; i < NUM_RANKS; i++) {
 		wchar_t temp[MAX_PATH];
 		wsprintf(temp, _T("ui/rank%d.png"), i);
@@ -1126,24 +1171,26 @@ void VidOverlayRender(const RECT &dest, int gameWidth, int gameHeight, int scan_
 			float x = frame_width * 0.5f;
 			float xs = frame_adjust * 0.025f * scale;
 			float xn = frame_adjust * (detector_enabled ? 0.05f : 0.019f) * scale;
-			float yn = frame_adjust * 0.002f;
+			float yn = frame_adjust * 0.006f;
 			float yb = frame_adjust * 0.003f;
 
 			// background
 			background_spr.Render(frame_width * 0.5f, 0, bar_h, Sprite::HCENTER);
 
-			// VS / FT
+			// VS / * FT * /
 			wchar_t vs[16] = _T("VS");
+			/*
 			if (game_ranked > 1) {
 				swprintf(vs, 16, _T("FT%d"), game_ranked);
 				fontWrite(vs, x, yn, 0xFFFFB200, 1.f, FNT_MED, FONT_ALIGN_CENTER);
 			}
-			else {
+			else { ...
+			*/
 				fontWrite(vs, x, yn, 0xFF808080, 1.f, FNT_MED, FONT_ALIGN_CENTER);
-			}
+			
 
 			// matchinfo
-			if (player1.name.str[0]) {
+			if (player1.name.str[0]) {				
 				player1.name.Render(x - xn, yn, 1.f, FNT_MED, FONT_ALIGN_RIGHT);
 				if (detector_enabled) {
 					if (player1.score.str[0]) {
@@ -1211,8 +1258,6 @@ void VidOverlayRender(const RECT &dest, int gameWidth, int gameHeight, int scan_
 	{
 		// player
 		for (int k = 0; k < 2; k++) {
-			if (kNetGame && !kNetSpectator && k != game_player)
-				continue;
 			// buffer (local = 0, online = 1)
 			for (int j = 0; j < 2; j++) {
 				if (kNetGame && kNetSpectator && j == 1)
@@ -1234,6 +1279,8 @@ void VidOverlayRender(const RECT &dest, int gameWidth, int gameHeight, int scan_
 					float x = k == 0 ? 0.05f + j * fx : 0.85f - j * fx;
 					float y = 0.05f + i * sep;
 					INT32 values = display_inputs[player][buffer][i].values;
+					if (!values) continue;
+					// do not render empty inputs
 					wchar_t buf[128];
 					wsprintf(buf, _T("%d"), display_inputs[player][buffer][i].frame);
 					INT32 color;
@@ -1260,6 +1307,9 @@ void VidOverlayRender(const RECT &dest, int gameWidth, int gameHeight, int scan_
 			}
 		}
 	}
+
+	// character portrait
+	portrait.Render();
 
 	gameDetector.Render();
 
@@ -1594,6 +1644,9 @@ void VidDisplayInputs(int slot, int state)
 
 		// save
 		for (int k = 0; k < 2; k++) {
+			// if the inputs did not change,then skip
+			if (display_inputs[k][slot][0].values == inputs[k]) continue;
+			// otherwise, shift everything up by 1 & add new inputs on top
 			for (int i = 1; i < INPUT_DISPLAY; i++) {
 				display_inputs[k][slot][INPUT_DISPLAY-i] = display_inputs[k][slot][INPUT_DISPLAY-i-1];
 			}

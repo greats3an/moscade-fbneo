@@ -12,3 +12,4 @@ src/dep/generated
 *.db
 *.opendb
 build/
+Test*

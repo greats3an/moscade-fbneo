@@ -27,6 +27,7 @@
 #endif
 
 #include "version.h"
+#include "moscade.h"
 
 HINSTANCE hAppInst = NULL;			// Application Instance
 HANDLE hMainThread;
@@ -718,7 +719,7 @@ static int AppInit()
 	// @FC force fightcade application settings
 	bSkipStartupCheck = 1; // skip startup check
 	bVidHardwareVertex = 1; // use hardware vertex
-	bVidMotionBlur = 0; // no motion blur please
+	// bVidMotionBlur = 0; // no motion blur please...or?
 	nVidSDisplayStatus = 0; // no display status for old kaillera (custom overlay)
 	bVidTripleBuffer = 0; // no triple buffer
 	bVidScanlines = 0; // no ddraw scanlines
@@ -798,6 +799,16 @@ static int AppInit()
 		// load driver icons
 		LoadDrvIcons();
 		bIconsLoaded = 1;
+	}
+
+	if (!MOSCadeCheckIsHandlerInstalled()) {
+		// moscade:// handler not installed. Prompting to do so.
+		if (MessageBox(NULL, _T("未正确在计算机安装 moscade:// 打开方式，现在安装？"), _T("提示"), MB_OKCANCEL | MB_ICONWARNING) == 1) {
+			MOSCadePromptInstallHandler();
+		}
+		else {
+			dprintf(_T("** moscade:// handler is correctly installed.\n"));
+		}
 	}
 
 	return 0;

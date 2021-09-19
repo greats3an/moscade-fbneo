@@ -2370,7 +2370,7 @@ static void OnCommand(HWND /*hDlg*/, int id, HWND /*hwndCtl*/, UINT codeNotify)
 			break;
 
 		case MENU_INSTALL_HANDLER:
-			InstallHandler();
+			MOSCadePromptInstallHandler();
 			break;
 
 		case MENU_BIG_OVERLAY:
@@ -3335,8 +3335,13 @@ int ScrnInit()
 			nWindowExStyles = WS_EX_CLIENTEDGE;
 		}
 	}
+	/* Creates our window in the middle of the screen */
+	hScrnWnd = CreateWindowEx(
+		nWindowExStyles, szClass, _T(APP_TITLE), nWindowStyles,
+		GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2,
+		0, 0, NULL, NULL, hAppInst, NULL
+	);
 
-	hScrnWnd = CreateWindowEx(nWindowExStyles, szClass, _T(APP_TITLE), nWindowStyles, 0, 0, 0, 0, NULL, NULL, hAppInst, NULL);
 	if (hScrnWnd == NULL) {
 		ScrnExit();
 		return 1;
