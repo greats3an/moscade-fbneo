@@ -111,10 +111,14 @@ bool __cdecl ggpo_on_client_event_callback(GGPOClientEvent *info)
 			TCHAR szText[1024] = { 0 };			
 			wcscpy_s(szUser, ANSIToTCHAR(info->u.chat.username,NULL,0));
 			if (wcscmp(szUser, _T("System")) == 0){
-				// messages emitted by ggponet / server (legacy)
-				// We don't really need this though, as it's only outputted by ggponet
-				// and my implmentation doesn't use this nick
-				// wcscpy_s(szText, ANSIToTCHAR(info->u.chat.text, NULL, 0));				 
+				// Everything sent by system are plain ANSI text
+				wcscpy_s(szText, ANSIToTCHAR(info->u.chat.text, NULL, 0));				 
+				// Handling commands
+				if (wcscmp(szText, _T("client_leave")) == 0) {
+					// our client left the server, emulator should be terminated with it
+					dprintf(_T("** GGPO closing manaully.\n"));					
+					exit(0);
+				}
 				break; 
 			} else {
 				// chat message, encoded by gbk w/ halfstring				
@@ -170,6 +174,7 @@ bool __cdecl ggpo_on_event_callback(GGPOEvent *info)
 	}
 
 	case GGPO_EVENTCODE_DISCONNECTED_FROM_PEER:
+		exit(0); // kills our emulator when peer disconnects
 		VidOverlaySetSystemMessage(_T("你与对手已断开连接！"));		
 		VidSSetSystemMessage(_T("Disconnected from Peer"));
 		if (bReplayRecording) {
@@ -252,9 +257,10 @@ bool __cdecl ggpo_begin_game_callback(char *name)
 
 bool __cdecl ggpo_advance_frame_callback(int flags)
 {
+	dprintf(_T("** GGPO frame advance\n"));
 	bSkipPerfmonUpdates = true;
 	nFramesEmulated--;
-	RunFrame(0, 0, 0);
+	RunFrame(1, 0, 0);
 	bSkipPerfmonUpdates = false;
 	return true;
 }
