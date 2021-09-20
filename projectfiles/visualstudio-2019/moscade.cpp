@@ -113,14 +113,15 @@ bool MOSCadePromptInstallHandler() {
 	GetModuleFileNameW(NULL, buffer, MAX_PATH);
 	GetModuleFileNameW(NULL, dbqoute, MAX_PATH);
 	int l = 0, r = 0;
-	while (*(buffer + l)) {
+	int len = wcslen(buffer);	
+	while (l<len) {
 		dbqoute[r] = buffer[l];
 		if (buffer[l] == '\\') {
 			dbqoute[++r] = '\\';
 		}
 		l++; r++;
 	}
-	dbqoute[r] = '\0';
+	dbqoute[r] = '\0';	
 	wofstream tfile("register.reg");
 	tfile << _T("Windows Registry Editor Version 5.00\n");
 	tfile << _T("[HKEY_CLASSES_ROOT\\moscade]\n");
@@ -130,7 +131,7 @@ bool MOSCadePromptInstallHandler() {
 	tfile << _T("[HKEY_CLASSES_ROOT\\moscade\\shell\\open]\n\n");
 	tfile << _T("[HKEY_CLASSES_ROOT\\moscade\\shell\\open\\command]\n");
 	tfile << _T("@=\"\\\"");
-	tfile << dbqoute;
+	tfile << gbk_from_wstring(dbqoute);
 	tfile << _T("\\\" \\\"%1\\\"\"");
 	ShellExecute(NULL, L"open", L"register.reg", NULL, NULL, SW_SHOWNORMAL);
 	return true;

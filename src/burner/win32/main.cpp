@@ -805,6 +805,7 @@ static int AppInit()
 		// moscade:// handler not installed. Prompting to do so.
 		if (MessageBox(NULL, _T("未正确在计算机安装 moscade:// 打开方式，现在安装？"), _T("提示"), MB_OKCANCEL | MB_ICONWARNING) == 1) {
 			MOSCadePromptInstallHandler();
+			exit(0);
 		}
 		else {
 			dprintf(_T("** moscade:// handler is correctly installed.\n"));
