@@ -4,8 +4,7 @@
     <LocalDebuggerCommand>$(SolutionDir)\..\..\build\$(TargetName)$(TargetExt)</LocalDebuggerCommand>
     <LocalDebuggerWorkingDirectory>..\..\build</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>
-    </LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>quark:debugdetector,jojobanr1</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test|Win32'">
     <LocalDebuggerCommand>$(SolutionDir)\..\..\build\$(TargetName)$(TargetExt)</LocalDebuggerCommand>

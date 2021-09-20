@@ -58,7 +58,7 @@ static int frame_warning_count = 0;
 //------------------------------------------------------------------------------------------------------------------------------
 // test inputs
 //------------------------------------------------------------------------------------------------------------------------------
-#define INPUT_DISPLAY 60
+#define INPUT_DISPLAY 30
 #define INPUT_BUTTONS 10
 struct TInput {
 	INT32 frame;
@@ -987,11 +987,13 @@ static Text info;
 static Text volume;
 static Text warning;
 
+#define INPUTS_SPR_COUNT 15.f
+
 void InputRender(float &x, float &y, int idx)
 {
-	static float w = 3.f;
-	static float h = 3.f;
-	inputs_spr.Render(x, y, FS(w), FS(h), 0.f * 8.f / 16.f, idx * 8.f / 120.f, 8.f / 16.f, (idx + 1) * 8.f / 120.f);
+	static float w = 6.f;
+	static float h = 6.f;
+	inputs_spr.Render(x, y, FS(w), FS(h), 0.f, idx / INPUTS_SPR_COUNT, 1.f , (idx + 1) / INPUTS_SPR_COUNT);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -1264,23 +1266,23 @@ void VidOverlayRender(const RECT &dest, int gameWidth, int gameHeight, int scan_
 					continue;
 				// input buffer
 				for (int i = 0; i < INPUT_DISPLAY; i++) {
-					const float sep = 0.01f;
+					const float sep = 0.02f;					
 					const float size = 1.f;
 					const float fy = 0.f;
 					const float fx = 0.15f;
 					int player = k;
 					int buffer = j;
-					// get player/buffer depending on netgame
+					/* get player/buffer depending on netgame
 					if (kNetGame && kNetSpectator && j == 0)
 						buffer = 1;
 					if (kNetGame && !kNetSpectator && j == 0)
 						player = 0;
+					*/
 					// positions
+					if (!display_inputs[player][buffer][i].frame) continue;
 					float x = k == 0 ? 0.05f + j * fx : 0.85f - j * fx;
 					float y = 0.05f + i * sep;
-					INT32 values = display_inputs[player][buffer][i].values;
-					if (!values) continue;
-					// do not render empty inputs
+					INT32 values = display_inputs[player][buffer][i].values;					
 					wchar_t buf[128];
 					wsprintf(buf, _T("%d"), display_inputs[player][buffer][i].frame);
 					INT32 color;
@@ -1292,17 +1294,40 @@ void VidOverlayRender(const RECT &dest, int gameWidth, int gameHeight, int scan_
 						case 4: color = 0xFFFF90FF; break;
 					}
 					fontWrite(buf, x, y + fy, color, 1.f, FNT_SMA * size, FONT_ALIGN_CENTER);
-					x+= sep*2.5f;
-					if (values & (1 << INPUT_LEFT)) { InputRender(x, y, 0); x+= sep; }
-					if (values & (1 << INPUT_RIGHT)) { InputRender(x, y, 1); x+= sep; }
-					if (values & (1 << INPUT_UP)) { InputRender(x, y, 2); x+= sep; }
-					if (values & (1 << INPUT_DOWN)) { InputRender(x, y, 3); x+= sep; }
-					if (values & (1 << INPUT_LP)) { InputRender(x, y, 8); x+= sep; }
-					if (values & (1 << INPUT_MP)) { InputRender(x, y, 9); x+= sep; }
-					if (values & (1 << INPUT_HP)) { InputRender(x, y, 10); x+= sep; }
-					if (values & (1 << INPUT_LK)) { InputRender(x, y, 11); x+= sep; }
-					if (values & (1 << INPUT_MK)) { InputRender(x, y, 12); x+= sep; }
-					if (values & (1 << INPUT_HK)) { InputRender(x, y, 13); x+= sep; }
+					if (!values) continue;
+					x+= sep*.8f;					
+					/*                  RLDU*/
+					const INT32  UL = 0b0101;
+					const INT32  UR = 0b1001;
+					const INT32  DL = 0b0110;
+					const INT32  DR = 0b1010;
+					INT32 t = values;
+					if ((t & UL) == UL) {
+						InputRender(x, y, 4); x += sep;
+						t &= ~UL;
+					}
+					if ((t & UR) == UR) {
+						InputRender(x, y, 5); x += sep;						
+						t &= ~UR;
+					}
+					if ((t & DL) == DL) {
+						InputRender(x, y, 6); x += sep;						
+						t &= ~DL;
+					}
+					if ((t & DR) == DR) {
+						InputRender(x, y, 7); x += sep;						
+						t &= ~DR;
+					}					
+					if (t & (1 << INPUT_LEFT)) { InputRender(x, y, 0); x+= sep; }
+					if (t & (1 << INPUT_RIGHT)) { InputRender(x, y, 1); x+= sep; }
+					if (t & (1 << INPUT_UP)) { InputRender(x, y, 2); x+= sep; }
+					if (t & (1 << INPUT_DOWN)) { InputRender(x, y, 3); x+= sep; }
+					if (t & (1 << INPUT_LP)) { InputRender(x, y, 8); x+= sep; }
+					if (t & (1 << INPUT_MP)) { InputRender(x, y, 9); x+= sep; }
+					if (t & (1 << INPUT_HP)) { InputRender(x, y, 10); x+= sep; }
+					if (t & (1 << INPUT_LK)) { InputRender(x, y, 11); x+= sep; }
+					if (t & (1 << INPUT_MK)) { InputRender(x, y, 12); x+= sep; }
+					if (t & (1 << INPUT_HK)) { InputRender(x, y, 13); x+= sep; }
 				}
 			}
 		}
@@ -1644,11 +1669,13 @@ void VidDisplayInputs(int slot, int state)
 
 		// save
 		for (int k = 0; k < 2; k++) {
-			// if the inputs did not change,then skip
-			if (display_inputs[k][slot][0].values == inputs[k]) continue;
-			// otherwise, shift everything up by 1 & add new inputs on top
-			for (int i = 1; i < INPUT_DISPLAY; i++) {
-				display_inputs[k][slot][INPUT_DISPLAY-i] = display_inputs[k][slot][INPUT_DISPLAY-i-1];
+			// If the inputs did not change,skip it
+			if ((inputs[k] == display_inputs[k][slot][0].values)) continue;
+			// When old input's head is empty, overwrite there instead
+			if (!display_inputs[k][slot][0].values == 0){
+				for (int i = 1; i < INPUT_DISPLAY; i++) {
+					display_inputs[k][slot][INPUT_DISPLAY-i] = display_inputs[k][slot][INPUT_DISPLAY-i-1];
+				}
 			}
 			display_inputs[k][slot][0].values = inputs[k];
 			display_inputs[k][slot][0].state = state;
