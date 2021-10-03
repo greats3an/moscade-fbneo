@@ -5,15 +5,14 @@ MOScade FBNeo
 [移步 Releases](https://github.com/greats3an/moscade-fbneo/releases)
 
 ## 功能
+- 连接适用 HTTPS 加密
+- 支持内网穿透 / 反代 / HTTP 代理
 - 较完整界面汉化
 - 中文 / GBK 昵称 + 聊天
-- 中文 / GBK DX9 渲染
 
 ## TODO
-- TCP / UDP 打洞
-- 正确处理玩家离席
-- ...
-- *欢迎 Issue / PR*
+- *画饼中*
+欢迎 Issue / PR*
 
 联机使用说明请见 [ggposrv3](https://github.com/greats3an/ggposrv3)
 
