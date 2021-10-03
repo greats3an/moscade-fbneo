@@ -955,6 +955,9 @@
     <ClInclude Include="..\..\src\burner\win32\moscade.h">
       <Filter>burner\win32</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\burner\win32\moscade_nexus.h">
+      <Filter>burner\win32</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\burn\burn.cpp">
@@ -4248,7 +4251,10 @@
     <ClCompile Include="..\..\src\burner\win32\luaconsole.cpp">
       <Filter>burner\win32</Filter>
     </ClCompile>
-    <ClCompile Include="moscade.cpp">
+    <ClCompile Include="..\..\src\burner\win32\moscade.cpp">
+      <Filter>burner\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\burner\win32\moscade_nexus.cpp">
       <Filter>burner\win32</Filter>
     </ClCompile>
   </ItemGroup>
@@ -4493,6 +4499,9 @@
     <Filter Include="libs\lua">
       <UniqueIdentifier>{b9badf1e-b347-4ef3-a885-ac5d4532848c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="python">
+      <UniqueIdentifier>{75028469-da7c-4e50-b344-aa5f718db9cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\burn\burn_sound_a.asm">
@@ -4526,6 +4535,9 @@
       <Filter>cpus\e132xs</Filter>
     </None>
     <None Include="..\..\src\burner\win32\app.rc" />
+    <None Include="..\..\src\dep\python\nexus.py">
+      <Filter>python</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\src\dep\libs\lib7z\7zVersion.rc">
@@ -4540,20 +4552,6 @@
     <ResourceCompile Include="..\..\src\burner\win32\version.rc">
       <Filter>burner</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="..\..\src\burn\drv\capcom\ctv_make.cpp">
-      <Filter>Burn\drv\capcom</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\src\cpu\m68k\m68kmake.c">
-      <Filter>cpus\m68k</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\src\burn\drv\pgm\pgm_sprite_create.cpp">
-      <Filter>Burn\drv\pgm</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\src\dep\scripts\build_details.cpp">
-      <Filter>ggpo</Filter>
-    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\src\burner\win32\resource\splash.bmp" />

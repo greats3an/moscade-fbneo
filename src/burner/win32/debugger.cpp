@@ -222,10 +222,10 @@ static unsigned int TraceBack(unsigned int nStartAddress, unsigned int nTotalIns
 // ----------------------------------------------------------------------------
 // Write a disassembly to a file
 
-static int CreateDisassFile(TCHAR* filename, unsigned int start, unsigned int end, int nCPU)
+static int CreateDisassFile(TCHAR* filename, unsigned int Start, unsigned int end, int nCPU)
 {
 	unsigned int size;
-	unsigned int pc = start;
+	unsigned int pc = Start;
 	FILE* fp = _tfopen(filename, _T("wt"));
 
 	if (fp == NULL) {
@@ -845,7 +845,7 @@ static int cmd_disass(TCHAR* arg)
 
 	// Check if we need to write to a file
 	if (*pos == _T('>')) {
-		unsigned int start, end;
+		unsigned int Start, end;
 		TCHAR filename[MAX_PATH] = _T("");
 		TCHAR* fn;
 
@@ -866,10 +866,10 @@ static int cmd_disass(TCHAR* arg)
 			_tcsncpy(filename, fn, pos - fn);
 		}
 
-		start = _tcstol(pos, &pos, 16);
+		Start = _tcstol(pos, &pos, 16);
 		end = _tcstol(pos, &pos, 16);
 
-		CreateDisassFile(filename, start, end, nDisassCPUType);
+		CreateDisassFile(filename, Start, end, nDisassCPUType);
 
 		return 0;
 	}

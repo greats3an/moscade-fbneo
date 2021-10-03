@@ -87,10 +87,13 @@ WCHAR* decode_msg(char* src) {
 	return decoded;
 }
 
-void SpawnOverwriteProcess(LPCWSTR mcade) {
-	ShellExecute(NULL, L"open", L"externalwriter.exe", mcade, NULL, SW_SHOWNORMAL);
+TCHAR * GetExecutableDirectroy() {
+	TCHAR buffer[MAX_PATH] = { 0 };
+	GetModuleFileName(NULL, buffer, MAX_PATH);
+	std::wstring::size_type pos = std::wstring(buffer).find_last_of(L"\\/");
+	buffer[pos] = 0;
+	return buffer;
 }
-
 
 bool MOSCadeCheckIsHandlerInstalled() {
 	TCHAR buffer[1024] = { 0 }; DWORD len = 1024;
@@ -136,5 +139,3 @@ bool MOSCadePromptInstallHandler() {
 	ShellExecute(NULL, L"open", L"register.reg", NULL, NULL, SW_SHOWNORMAL);
 	return true;
 }
-
-

@@ -23,11 +23,12 @@
 #include <winsock.h>
 
 #if defined (FBNEO_DEBUG)
- bool bDisableDebugConsole = true;
+ bool bDisableDebugConsole = false;
 #endif
 
 #include "version.h"
 #include "moscade.h"
+using namespace std;
 
 HINSTANCE hAppInst = NULL;			// Application Instance
 HANDLE hMainThread;
@@ -45,7 +46,7 @@ TCHAR szAppBurnVer[EXE_NAME_SIZE] = _T("");
 TCHAR szAppExeName[EXE_NAME_SIZE + 1];
 
 bool bAlwaysProcessKeyboardInput = false;
-bool bAlwaysCreateSupportFolders = true;
+bool bAlwaysCreateSupportFolders = false;
 bool bAutoLoadGameList = false;
 
 bool bQuietLoading = false;
@@ -359,6 +360,12 @@ int dprintf(TCHAR* pszFormat, ...)
 #endif
 
 	return 0;
+}
+
+int dprintf(string pszFormat) {
+	TCHAR buf[1024] = { 0 };
+	copy(pszFormat.begin(), pszFormat.end(), buf);
+	return dprintf(buf);
 }
 
 void CloseDebugLog()
@@ -1137,15 +1144,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nShowCmd
 		{_T("config")},
 		{_T("config/games")},
 		{_T("config/ips")},
-		{_T("config/localisation")},
+		// {_T("config/localisation")},
 		{_T("config/presets")},
-		{_T("recordings")},
+		// {_T("recordings")},
 		{_T("roms")},
 		{_T("savestates")},
-		{_T("screenshots")},
-		{_T("fightcade")},
+		// {_T("screenshots")},
+		// {_T("fightcade")},
 #ifdef INCLUDE_AVI_RECORDING
-		{_T("avi")},
+		//{_T("avi")},
 #endif
 		{_T("\0")} // END of list
 	};

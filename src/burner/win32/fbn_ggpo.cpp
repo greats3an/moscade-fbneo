@@ -3,6 +3,7 @@
 #include "ggpoclient.h"
 #include "ggpo_perfmon.h"
 #include "moscade.h"
+#include "moscade_nexus.h"
 GGPOSession *ggpo = NULL;
 bool bSkipPerfmonUpdates = false;
 
@@ -465,7 +466,7 @@ static bool ggpo_init()
 	FreeLibrary(hLib);
 	return true;
 }
-
+GGPONexusProxy * gp;
 void QuarkInit(TCHAR* tconnect)
 {
 	char connect[MAX_PATH];
@@ -497,15 +498,11 @@ void QuarkInit(TCHAR* tconnect)
 	if (strncmp(connect, "moscade://", strlen("moscade://")) == 0) {
 		MOSCadeURI uri; uri.from_uri(connect);
 
-		if (strcmp(GetGGPONetHost(), uri.host) != 0) {
-			dprintf(_T("** Overwriting host:"));
-			dprintf(ANSIToTCHAR(uri.host, NULL, 0));
-			SpawnOverwriteProcess(ANSIToTCHAR(connect, NULL, 0));
-			exit(0); // despawns our process & lets overwritter do the job
-		}
-		else {
-			dprintf(_T("** Host match! Procceding to connect.\n"));
-		}
+		dprintf(_T("** Spawning MOSCade Nexus Proxy...\n"));
+		char args[512] = { 0 };
+		sprintf(args, "--tcp-host ws://%sggpo --udp-host ws://%snexus?quark=%s", uri.host, uri.host, uri.quark);
+		gp = &GGPONexusProxy(args);
+		gp->Start();
 		dprintf(_T("\n** Connecting via moscade:// protocol\n"));
 		dprintf(_T("** MOSCade quark: "));
 		dprintf(ANSIToTCHAR(uri.quark,NULL,0));		
@@ -536,7 +533,7 @@ void QuarkInit(TCHAR* tconnect)
 		dprintf(_T("** Quark"));
 		dprintf(ANSIToTCHAR(connect,NULL,0));
 		dprintf(_T("\n"));
-		VidOverlaySetSystemMessage(_T("Connecting..."));
+		VidOverlaySetSystemMessage(_T("连接 Nexus..."));
 	}
 	else if (strncmp(connect, "quark:direct", strlen("quark:direct")) == 0) {
 		sscanf(connect, "quark:direct,%[^,],%d,%[^,],%d,%d,%d,%d", game, &localPort, server, &remotePort, &player, &delay, &ranked);
@@ -548,7 +545,7 @@ void QuarkInit(TCHAR* tconnect)
 		iSeed = 0;
 		ggpo = ggpo_start_session(&cb, game, localPort, server, remotePort, player);
 		ggpo_set_frame_delay(ggpo, delay);
-		VidOverlaySetSystemMessage(_T("Connecting..."));
+		VidOverlaySetSystemMessage(_T("尝试直连..."));
 	}
 	/*
 	else if (strncmp(connect, "quark:synctest", strlen("quark:synctest")) == 0) {
@@ -563,7 +560,7 @@ void QuarkInit(TCHAR* tconnect)
 		kNetLua = 1;
 		iSeed = 0;
 		ggpo = ggpo_start_streaming(&cb, game, quarkid, remotePort);
-		VidOverlaySetSystemMessage(_T("Connecting..."));
+		VidOverlaySetSystemMessage(_T("连接 Nexus..."));
 	}
 	else if (strncmp(connect, "quark:replay", strlen("quark:replay")) == 0) {
 		bVidAutoSwitchFullDisable = true;

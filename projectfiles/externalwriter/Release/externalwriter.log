@@ -1,5 +1,4 @@
-﻿  externalwriter.cpp
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1341,5): warning MSB8012: TargetPath(C:\Users\Huang\Desktop\moscadefbneo\projectfiles\visualstudio-2019\Release\externalwriter.exe) does not match the Linker's OutputFile property value (C:\Users\Huang\Desktop\moscadefbneo\build\externalwriter.exe). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1341,5): warning MSB8012: TargetPath(C:\Users\Huang\Desktop\moscadefbneo\projectfiles\visualstudio-2019\Release\externalwriter.exe) does not match the Linker's OutputFile property value (C:\Users\Huang\Desktop\moscadefbneo\build\externalwriter.exe). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
 LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/LTCG' specification
   Generating code
   Not all modules are compiled with -Gy (function comdat), build without incremental LTCG.

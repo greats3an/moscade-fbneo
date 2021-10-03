@@ -139,6 +139,8 @@ char *utf8_from_wstring(const WCHAR *s);
 
 int dprintf(TCHAR* pszFormat, ...);					// Use instead of printf() in the UI
 
+int dprintf(std::string pszFormat);
+
 void MonitorAutoCheck();
 
 void AppCleanup();

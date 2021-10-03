@@ -12,4 +12,10 @@ src/dep/generated
 *.db
 *.opendb
 build/
+*.build
+*.log
+*.tlog
+*.exe
 Test*
+
+nexus.cmd

@@ -49,6 +49,7 @@
     <ClInclude Include="..\..\src\burner\win32\d3dkmt_sync.h" />
     <ClInclude Include="..\..\src\burner\win32\dynhuff.h" />
     <ClInclude Include="..\..\src\burner\win32\moscade.h" />
+    <ClInclude Include="..\..\src\burner\win32\moscade_nexus.h" />
     <ClInclude Include="..\..\src\burner\win32\resource.h" />
     <ClInclude Include="..\..\src\burn\bitswap.h" />
     <ClInclude Include="..\..\src\burn\burn.h" />
@@ -401,6 +402,8 @@
     <ClCompile Include="..\..\src\burner\win32\memcard.cpp" />
     <ClCompile Include="..\..\src\burner\win32\menu.cpp" />
     <ClCompile Include="..\..\src\burner\win32\misc_win32.cpp" />
+    <ClCompile Include="..\..\src\burner\win32\moscade.cpp" />
+    <ClCompile Include="..\..\src\burner\win32\moscade_nexus.cpp" />
     <ClCompile Include="..\..\src\burner\win32\neocdlist.cpp" />
     <ClCompile Include="..\..\src\burner\win32\neocdsel.cpp" />
     <ClCompile Include="..\..\src\burner\win32\numdial.cpp" />
@@ -596,8 +599,7 @@
     <ClCompile Include="..\..\src\intf\video\win32\vid_memorybuffer.cpp" />
     <ClCompile Include="..\..\src\intf\video\win32\vid_overlay.cpp" />
     <ClCompile Include="generated\m68kops.c" />
-    <ClCompile Include="moscade.cpp" />
-    <CustomBuild Include="..\..\src\burn\drv\capcom\ctv_make.cpp">
+    <!-- <CustomBuild Include="..\..\src\burn\drv\capcom\ctv_make.cpp">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl ..\..\src\burn\drv\capcom\%(Filename).cpp 
 %(Filename).exe &gt; generated\ctv.h 
 del %(Filename).obj
@@ -622,7 +624,7 @@ del %(Filename).exe</Command>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Test|Win32'">false</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Test wUnicode|Win32'">false</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
-    </CustomBuild>
+    </CustomBuild> -->
     <ClCompile Include="..\..\src\burn\drv\capcom\d_cps1.cpp" />
     <ClCompile Include="..\..\src\burn\drv\capcom\d_cps2.cpp" />
     <ClCompile Include="..\..\src\burn\drv\capcom\fcrash_snd.cpp" />
@@ -827,7 +829,7 @@ del %(Filename).exe</Command>
     <ClCompile Include="..\..\src\burn\drv\pgm\pgm_crypt.cpp" />
     <ClCompile Include="..\..\src\burn\drv\pgm\pgm_draw.cpp" />
     <ClCompile Include="..\..\src\burn\drv\pgm\pgm_run.cpp" />
-    <CustomBuild Include="..\..\src\burn\drv\pgm\pgm_sprite_create.cpp">
+    <!-- <CustomBuild Include="..\..\src\burn\drv\pgm\pgm_sprite_create.cpp">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl ..\..\src\burn\drv\pgm\%(Filename).cpp 
 %(Filename).exe &gt; generated\pgm_sprite.h 
 del %(Filename).obj
@@ -848,7 +850,7 @@ del %(Filename).exe</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Test|Win32'">pgm_sprite.h</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Test wUnicode|Win32'">pgm_sprite.h</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">pgm_sprite.h</Outputs>
-    </CustomBuild>
+    </CustomBuild> -->
     <ClCompile Include="..\..\src\burn\drv\pre90s\d_1942.cpp" />
     <ClCompile Include="..\..\src\burn\drv\pre90s\d_1943.cpp" />
     <ClCompile Include="..\..\src\burn\drv\pre90s\d_4enraya.cpp" />
@@ -1383,7 +1385,7 @@ del %(Filename).exe</Command>
     <ClCompile Include="..\..\src\cpu\m6809_intf.cpp" />
     <ClCompile Include="..\..\src\cpu\m68k\m68kcpu.c" />
     <ClCompile Include="..\..\src\cpu\m68k\m68kdasm.c" />
-    <CustomBuild Include="..\..\src\cpu\m68k\m68kmake.c">
+    <!-- <CustomBuild Include="..\..\src\cpu\m68k\m68kmake.c">
       <FileType>CppCode</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /DINLINE="__inline static" ..\..\src\cpu\m68k\%(Filename).c
 
@@ -1417,7 +1419,7 @@ del %(Filename).exe
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Test|Win32'">m68kmake.exe</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Test wUnicode|Win32'">m68kmake.exe</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">m68kmake.exe</Outputs>
-    </CustomBuild>
+    </CustomBuild> -->
     <ClCompile Include="..\..\src\cpu\mips3\cop0.cpp" />
     <ClCompile Include="..\..\src\cpu\mips3\cop1.cpp" />
     <ClCompile Include="..\..\src\cpu\mips3\mips3.cpp" />
@@ -1515,7 +1517,7 @@ del %(Filename).exe
     <ClCompile Include="..\..\src\dep\libs\zlib\trees.c" />
     <ClCompile Include="..\..\src\dep\libs\zlib\uncompr.c" />
     <ClCompile Include="..\..\src\dep\libs\zlib\zutil.c" />
-    <CustomBuild Include="..\..\src\dep\scripts\build_details.cpp">
+    <!-- <CustomBuild Include="..\..\src\dep\scripts\build_details.cpp">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Test|Win32'">false</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Test wUnicode|Win32'">false</DeploymentContent>
@@ -1564,7 +1566,7 @@ del build_details.exe
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Test|Win32'">build_details.h</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Test wUnicode|Win32'">build_details.h</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">build_details.h</Outputs>
-    </CustomBuild>
+    </CustomBuild> -->
     <ClCompile Include="..\..\src\intf\audio\aud_dsp.cpp" />
     <ClCompile Include="..\..\src\intf\audio\aud_interface.cpp" />
     <ClCompile Include="..\..\src\intf\audio\lowpass2.cpp" />
@@ -1601,6 +1603,7 @@ del build_details.exe
     <None Include="..\..\src\burn\burn_sound_a.asm" />
     <None Include="..\..\src\cpu\e132xs\e132xsop.inc" />
     <None Include="..\..\src\dep\libs\zlib\zconf.h.in" />
+    <None Include="..\..\src\dep\python\nexus.py" />
     <None Include="..\..\src\intf\video\scalers\2xsaimmx.asm" />
     <None Include="..\..\src\intf\video\scalers\eagle_fm.asm" />
     <None Include="..\..\src\intf\video\scalers\hq2x32.asm" />
@@ -1715,9 +1718,12 @@ del build_details.exe
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;..\..\src\dep\libs\lua;..\..\src\dep\vc\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;..\..\src\dep\libs\lua;..\..\src\dep\vc\include;..\..\src\dep\;$(IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)$(Configuration)\</IntDir>
     <LibraryPath>$(LibraryPath)</LibraryPath>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test|Win32'">
     <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;..\..\src\dep\libs\lua;..\..\src\dep\vc\include;$(IncludePath)</IncludePath>
@@ -1730,9 +1736,10 @@ del build_details.exe
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;..\..\src\dep\libs\lua;..\..\src\dep\vc\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;..\..\src\dep\libs\lua;..\..\src\dep\vc\include;..\..\src\dep\;$(IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)$(Configuration)\</IntDir>
     <LibraryPath>$(LibraryPath)</LibraryPath>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;..\..\src\dep\vc\include;$(IncludePath)</IncludePath>
@@ -1763,6 +1770,7 @@ del build_details.exe
       <PreprocessorDefinitions>BUILD_WIN32;FASTCALL;_DEBUG;FBNEO_DEBUG;LSB_FIRST;INLINE=__inline static;INCLUDE_AVI_RECORDING;INCLUDE_LIB_PNGH;C_INLINE=__inline;MAME_INLINE=__inline static;_CRT_SECURE_NO_WARNINGS;WINAPI_FAMILY=WINAPI_FAMILY_DESKTOP_APP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalOptions>/utf-8</AdditionalOptions>
+      <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -1777,8 +1785,8 @@ del build_details.exe
       </AdditionalOptions>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>..\..\src\dep\python\build.cmd</Command>
+      <Message>Build Python related execuatbles</Message>
     </PreBuildEvent>
     <Manifest>
       <VerboseOutput>false</VerboseOutput>
@@ -1792,6 +1800,24 @@ del build_details.exe
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
     </ResourceCompile>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>
+      </Message>
+      <RootFolder>
+      </RootFolder>
+    </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Test|Win32'">
     <ClCompile>
@@ -1895,8 +1921,8 @@ del build_details.exe
       </AdditionalOptions>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>..\..\src\dep\python\build.cmd</Command>
+      <Message>Build Python related execuatbles</Message>
     </PreBuildEvent>
     <Manifest>
       <VerboseOutput>false</VerboseOutput>
@@ -1908,6 +1934,12 @@ del build_details.exe
       <AdditionalOptions>
       </AdditionalOptions>
     </ResourceCompile>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+      <Message>
+      </Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

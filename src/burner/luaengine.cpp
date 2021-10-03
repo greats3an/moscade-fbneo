@@ -747,9 +747,9 @@ struct TieredRegion
 	{
 		struct Island
 		{
-			unsigned int start;
+			unsigned int Start;
 			unsigned int end;
-			__forceinline bool Contains(unsigned int address, int size) const { return address < end && address+size > start; }
+			__forceinline bool Contains(unsigned int address, int size) const { return address < end && address+size > Start; }
 		};
 		std::vector<Island> islands;
 
@@ -767,7 +767,7 @@ struct TieredRegion
 				if(addr < lastEnd || addr > lastEnd + (long long)maxGap)
 				{
 					islands.push_back(Island());
-					islands.back().start = addr;
+					islands.back().Start = addr;
 				}
 				islands.back().end = addr+1;
 				lastEnd = addr+1;
