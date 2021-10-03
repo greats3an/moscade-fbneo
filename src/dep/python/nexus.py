@@ -8,8 +8,8 @@ from select import select
 from socketserver import BaseRequestHandler, ThreadingMixIn , TCPServer
 from struct import pack, unpack
 from threading import Lock, Thread
-from time import sleep
-import logging,socket,sys
+from time import sleep, time_ns
+import logging,socket,sys,traceback
 
 import websocket
 # pip install websocket-client
@@ -21,19 +21,22 @@ class UDPServer(Thread):
         self.server_address = (listen_address,int(listen_port))
         self.ws_uri = ws_uri
 
-        self.ws = websocket.WebSocket()
-        self.ws.connect(self.ws_uri)
-
         self.fd = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
         self.fd.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.fd.bind(self.server_address)
         self.logger = logging.getLogger('UDPServer')
-        self.addrs = dict()
+        self.idents = dict()
+        self.uuid = pack('<L',time_ns() & 0xFFFFFFFF)
+
+        self.ws_lock = Lock()
+        with self.ws_lock:
+            self.ws = websocket.WebSocket()
+            self.ws.connect(self.ws_uri)
 
         self.recv_thread = Thread(target=self.recv_ws,daemon=True)        
         self.recv_lock = Lock()        
         self.recv_thread.start()        
-        
+                
         super().__init__(daemon=True)
         print('** READY : udp/%s:%s <-> %s' % (*self.server_address,self.ws_uri))
 
@@ -42,36 +45,45 @@ class UDPServer(Thread):
             try:    
                 buf = self.ws.recv()
                 assert type(buf) != str
-                # self.logger.debug('WSOCK %s' % buf.hex(' '))
-                baddr, data = buf[:6],buf[6:]                
+                # self.logger.error('WSOCK %s' % buf.hex())
+                ident, data = buf[:10],buf[10:]
                 with self.recv_lock:
-                    for addr in self.addrs:
-                        if addr != baddr:                        
-                            self.fd.sendto(data,self.bytes2addr(addr))
-                            # self.logger.debug('WSOCK %s -> %s' % (baddr,addr))     
+                    for ident_ in self.idents:
+                        if ident_ != ident:
+                            self.fd.sendto(data,self.ident2addr(ident_))
+                            # self.logger.error('WSOCK %s -> %s' % (baddr,addr))     
             except Exception as e:
+                self.logger.fatal(traceback.format_exc())
                 self.logger.fatal("CONNECTION LOST : %s" % e)
                 suicide()                
 
     def addr2bytes(self, addr : tuple):	        	
-        '''packing address tuple'''
+        '''packing address tuple, 6bytes'''
         host,port = addr
         return socket.inet_aton(host) + pack('H', port)
 
     def bytes2addr(self, b : bytes):
-        '''unpacking address tuple'''
+        '''unpacking address tuple, 6bytes'''
         host,port = b[:4],b[4:]
-        return socket.inet_ntoa(host), unpack('H',port)[0]
+        return socket.inet_ntoa(host), unpack('H',port)[0]    
+
+    def ident2addr(self,ident):
+        return self.bytes2addr(ident[:6])
+
+    def create_ident(self,addr):
+        '''creates 10-byte network ident,unqiue to each ws connection'''
+        return self.addr2bytes(addr) + self.uuid
 
     def run(self):                
         while not self.shutdown:                     
             # new connection w/ data to be sent                
             data, addr = self.fd.recvfrom(4096)
-            # self.logger.debug('UDP %s:%s -> %s' % (*addr,data.hex(' ')))
-            baddr = self.addr2bytes(addr)
-            self.ws.send_binary(baddr + data)
+            # self.logger.error('UDP %s:%s -> %s' % (*addr,data.hex()))
+            ident = self.create_ident(addr)
+            with self.ws_lock:
+                self.ws.send_binary(ident + data)
             with self.recv_lock:
-                self.addrs[baddr] = 1 # marking the address where proceeding data will be send to
+                self.idents[ident] = 1 # marking the address where proceeding data will be send to
 
 class TCPServer(ThreadingMixIn,TCPServer):
     def __init__(self, listen_address , listen_port , ws_uri):
@@ -96,15 +108,16 @@ class TCPHandler(BaseRequestHandler):
             try:
                 if (s1 in r):                
                     buf_ = s1.recv(4096)                    
-                    # self.logger.debug('TCP: %s' % buf_.hex(' '))
+                    # self.logger.error('TCP: %s' % buf_.hex())
                     self.ws.send_binary(buf_)
                 if (s2 in r):                
                     buf_ = self.ws.recv()
-                    # self.logger.debug('WSOCK %s' % buf_.hex(' '))
+                    # self.logger.error('WSOCK %s' % buf_.hex())
                     buf += buf_
                 if (buf):                
                     buf = buf[s1.send(buf):]            
             except Exception as e:
+                self.logger.fatal(traceback.format_exc())
                 self.logger.fatal("Exception : %s" % e)
                 self.ws.close()
                 if self.request : self.request.close()        
