@@ -4562,4 +4562,7 @@
     <Image Include="..\..\src\burner\win32\resource\TV Not Found.ico" />
     <Image Include="..\..\src\burner\win32\resource\TV Not Found Non Essential.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\src\dep\scripts\build_details.cpp" />
+  </ItemGroup>
 </Project>

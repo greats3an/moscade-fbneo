@@ -46,7 +46,7 @@ TCHAR szAppBurnVer[EXE_NAME_SIZE] = _T("");
 TCHAR szAppExeName[EXE_NAME_SIZE + 1];
 
 bool bAlwaysProcessKeyboardInput = false;
-bool bAlwaysCreateSupportFolders = false;
+bool bAlwaysCreateSupportFolders = true;
 bool bAutoLoadGameList = false;
 
 bool bQuietLoading = false;
@@ -735,7 +735,7 @@ static int AppInit()
 	bHardwareGammaOnly = 0; // hardware gamma only
 	bSaveInputs = 1; // save inputs for each game
 	nSplashTime = 0; // no splash time please
-	bAlwaysCreateSupportFolders = 1; // always create support folders
+	bAlwaysCreateSupportFolders = 1; // don't always create support folders
 	EnableHiscores = 1; // save hiscores
 	bEnableIcons = 0; // no driver icons (faster load)
 	bCheatsAllowed = 0; // no cheats
@@ -1066,6 +1066,7 @@ int ProcessCmdLine()
 static void CreateSupportFolders()
 {
 	TCHAR szSupportDirs[][MAX_PATH] = {
+		/*
 		{_T("support/")},
 		{_T("support/previews/")},
 		{_T("support/titles/")},
@@ -1090,7 +1091,9 @@ static void CreateSupportFolders()
 		{_T("support/pcbs/")},
 		{_T("support/history/")},
 		{_T("neocdiso/")},
+		*/
 		// rom directories
+		/*
 		{_T("roms/megadrive/")},
 		{_T("roms/pce/")},
 		{_T("roms/sgx/")},
@@ -1104,6 +1107,8 @@ static void CreateSupportFolders()
 		{_T("roms/nes/")},
 		{_T("roms/nes_fds/")},
 		{_T("roms/nes_hb/")},
+		*/
+		{_T("roms")},
 		{_T("\0")} // END of list
 	};
 
@@ -1129,10 +1134,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nShowCmd
 	// Make version string (@FC version at the end)
 	if (nBurnVer & 0xFF) {
 		// private version (alpha)
-		_stprintf(szAppBurnVer, _T("%x.%x.%x.%02x-%d"), nBurnVer >> 20, (nBurnVer >> 16) & 0x0F, (nBurnVer >> 8) & 0xFF, nBurnVer & 0xFF, FIGHTCADE_VERSION);
+		_stprintf(szAppBurnVer, _T("%x.%x.%x.%02x-%d"), nBurnVer >> 20, (nBurnVer >> 16) & 0x0F, (nBurnVer >> 8) & 0xFF, nBurnVer & 0xFF, MOSCADE_VERSION);
 	} else {
 		// public version
-		_stprintf(szAppBurnVer, _T("%x.%x.%x-%d"), nBurnVer >> 20, (nBurnVer >> 16) & 0x0F, (nBurnVer >> 8) & 0xFF, FIGHTCADE_VERSION);
+		_stprintf(szAppBurnVer, _T("%x.%x.%x-%d"), nBurnVer >> 20, (nBurnVer >> 16) & 0x0F, (nBurnVer >> 8) & 0xFF, MOSCADE_VERSION);
 	}
 
 	nAppShowCmd = nShowCmd;

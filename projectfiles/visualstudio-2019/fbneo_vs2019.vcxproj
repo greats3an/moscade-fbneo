@@ -1517,7 +1517,7 @@ del %(Filename).exe
     <ClCompile Include="..\..\src\dep\libs\zlib\trees.c" />
     <ClCompile Include="..\..\src\dep\libs\zlib\uncompr.c" />
     <ClCompile Include="..\..\src\dep\libs\zlib\zutil.c" />
-    <!-- <CustomBuild Include="..\..\src\dep\scripts\build_details.cpp">
+    <CustomBuild Include="..\..\src\dep\scripts\build_details.cpp">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Test|Win32'">false</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Test wUnicode|Win32'">false</DeploymentContent>
@@ -1566,7 +1566,7 @@ del build_details.exe
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Test|Win32'">build_details.h</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Test wUnicode|Win32'">build_details.h</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">build_details.h</Outputs>
-    </CustomBuild> -->
+    </CustomBuild>
     <ClCompile Include="..\..\src\intf\audio\aud_dsp.cpp" />
     <ClCompile Include="..\..\src\intf\audio\aud_interface.cpp" />
     <ClCompile Include="..\..\src\intf\audio\lowpass2.cpp" />
@@ -1723,7 +1723,8 @@ del build_details.exe
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
-    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test|Win32'">
     <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;..\..\src\dep\libs\lua;..\..\src\dep\vc\include;$(IncludePath)</IncludePath>

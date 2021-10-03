@@ -13,6 +13,7 @@ src/dep/generated
 *.opendb
 build/
 *.build
+*.dist
 *.log
 *.tlog
 *.exe
