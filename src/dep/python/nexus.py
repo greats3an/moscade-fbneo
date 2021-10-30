@@ -7,9 +7,9 @@ from argparse import ArgumentParser
 from select import select
 from socketserver import BaseRequestHandler, ThreadingMixIn , TCPServer
 from struct import pack, unpack
-from threading import Lock, Thread
-from time import sleep, time_ns
-import logging,socket,sys,traceback
+from threading import Thread
+from time import sleep
+import socket,sys,traceback
 
 import websocket,os
 # pip install websocket-client
@@ -23,15 +23,19 @@ class UDPServer(Thread):
 
         self.fd = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
         self.fd.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.fd.bind(self.server_address)
-        self.logger = logging.getLogger('UDPServer')        
+        self.fd.bind(self.server_address)        
         
         self.conns = dict()
+        self.pn    = b'\x00'
 
         self.ws = websocket.WebSocket()
         def ws_run():
-            self.ws.connect(self.ws_uri)            
-            print('** READY : udp/%s:%s <-> %s' % (*self.server_address,self.ws_uri))
+            self.ws.connect(self.ws_uri)   
+            hello_msg = self.ws.recv()
+            header,player_n = hello_msg[:-1],int(hello_msg[-1:])
+            assert 'SVHLO_P' == header
+            print('[UDP] READY : udp/%s:%s <-> %s as P%d' % (*self.server_address,self.ws_uri,player_n))
+            self.pn = player_n.to_bytes(1,'little')
             while not self.shutdown_:
                 self.on_ws_recv(self.ws.recv())
         self.ws_thread = Thread(target=ws_run)
@@ -39,26 +43,32 @@ class UDPServer(Thread):
         self.ws_thread.start()
 
         super().__init__(daemon=True)
-        
+    
+    def from_ident(self,ident):        
+        return unpack('H',(ident[:2]))[0],ident[2]
+    def to_ident(self,port,pn):
+        return pack('H',port) + pn
+
     def on_ws_recv(self,buf):        
-        port,data = unpack('H',(buf[:2]))[0],buf[2:]
-        for port_ in self.conns:
-            if port != port_:                            
-                self.fd.sendto(data,('127.0.0.1',port_))
+        ident,data = buf[:3],buf[3:]        
+        for ident_ in self.conns:
+            if ident != ident_:                            
+                self.fd.sendto(data,('127.0.0.1',self.from_ident(ident_)[0]))
 
     def run(self):                
         while not self.shutdown_:                     
             # new connection w/ data to be sent
-            data, addr = self.fd.recvfrom(64)                                                
-            self.ws.send_binary(pack('H', addr[1]) + data)                    
-            self.conns[addr[1]] = True
+            data, addr = self.fd.recvfrom(64)          
+            ident = self.to_ident(addr[1],self.pn)                                    
+            self.ws.send_binary(ident + data)                    
+            self.conns[ident] = True
         
 
 class TCPServer(ThreadingMixIn,TCPServer):
     def __init__(self, listen_address , listen_port , ws_uri):
         self.ws_uri = ws_uri
         super().__init__((listen_address,int(listen_port)),TCPHandler,True)        
-        print('** READY : tcp/%s:%s <-> %s' % (*self.server_address,self.ws_uri))
+        print('[TCP] READY : tcp/%s:%s <-> %s' % (*self.server_address,self.ws_uri))
 
 class TCPHandler(BaseRequestHandler):
     def __init__(self, request, client_address, server) -> None:
@@ -98,7 +108,7 @@ def suicide():
     if is_shutting_down:
         return
     is_shutting_down = True
-    logging.fatal('Shutting down')
+    print('[ERROR] Shutting down')
     srv_u.shutdown_ = True
     srv.shutdown_ = True
     os.kill(os.getpid(), 9)
@@ -110,12 +120,11 @@ if __name__ == '__main__':
     argparse.add_argument('--tcp-port',help='TCP listening port',default=8000,type=int)
     argparse.add_argument('--udp-port',help='UDP listening port',default=9000,type=int)
 
-    print('*** GGPO Nexus Proxy starting up ***')
+    print('[INFO] GGPO Nexus Proxy starting up')
     print('*** Args',*sys.argv)    
     args = argparse.parse_args()
     print('*** Python Version : %s' % sys.version)
-    print('*** HOST 1',args.tcp_host)
-    print('*** HOST 2',args.udp_host)    
+    
     srv = TCPServer('127.0.0.1',args.tcp_port,args.tcp_host)
     srv_u = UDPServer('127.0.0.1',args.udp_port,args.udp_host)
     
