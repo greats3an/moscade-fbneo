@@ -6708,26 +6708,57 @@ static struct BurnRomInfo Spf2tbRomDesc[] = {
 STD_ROM_PICK(Spf2tb)
 STD_ROM_FN(Spf2tb)
 
+
+// Super Puzzle Fighter II Turbo (Color Blind Hack) IPS 1
+// Author: TrashBoat
+// https://www.romhacking.net/hacks/6122/
+
 static struct BurnRomInfo Spf2tcbRomDesc[] = {
-	{ "pzfe.03",       0x080000, 0x2af51954, CPS2_PRG_68K | BRF_ESS | BRF_PRG },
-	{ "pzf.04",        0x080000, 0x01bf5ff5, CPS2_PRG_68K | BRF_ESS | BRF_PRG },
+	{ "pzfe.03",         0x080000, 0x2af51954, CPS2_PRG_68K | BRF_ESS | BRF_PRG },
+	{ "pzfcb.04",        0x080000, 0xd1aaf86c, CPS2_PRG_68K | BRF_ESS | BRF_PRG },
 
-	{ "pzf.14m",       0x100000, 0x2d4881cb, CPS2_GFX | BRF_GRA },
-	{ "pzf.16m",       0x100000, 0x4b0fd1be, CPS2_GFX | BRF_GRA },
-	{ "pzf.18m",       0x100000, 0xe43aac33, CPS2_GFX | BRF_GRA },
-	{ "pzf.20m",       0x100000, 0x7f536ff1, CPS2_GFX | BRF_GRA },
+	{ "pzf.14m",         0x100000, 0x2d4881cb, CPS2_GFX | BRF_GRA },
+	{ "pzf.16m",         0x100000, 0x4b0fd1be, CPS2_GFX | BRF_GRA },
+	{ "pzf.18m",         0x100000, 0xe43aac33, CPS2_GFX | BRF_GRA },
+	{ "pzf.20m",         0x100000, 0x7f536ff1, CPS2_GFX | BRF_GRA },
 
-	{ "pzf.01",        0x020000, 0x600fb2a3, CPS2_PRG_Z80 | BRF_ESS | BRF_PRG },
-	{ "pzf.02",        0x020000, 0x496076e0, CPS2_PRG_Z80 | BRF_ESS | BRF_PRG },
+	{ "pzf.01",          0x020000, 0x600fb2a3, CPS2_PRG_Z80 | BRF_ESS | BRF_PRG },
+	{ "pzf.02",          0x020000, 0x496076e0, CPS2_PRG_Z80 | BRF_ESS | BRF_PRG },
 
-	{ "pzf.11m",       0x200000, 0x78442743, CPS2_QSND | BRF_SND },
-	{ "pzf.12m",       0x200000, 0x399d2c7b, CPS2_QSND | BRF_SND },
+	{ "pzf.11m",         0x200000, 0x78442743, CPS2_QSND | BRF_SND },
+	{ "pzf.12m",         0x200000, 0x399d2c7b, CPS2_QSND | BRF_SND },
 
-	{ "spf2t.key",     0x000014, 0x4c4dc7e3, CPS2_ENCRYPTION_KEY },
+	{ "spf2t.key",       0x000014, 0x4c4dc7e3, CPS2_ENCRYPTION_KEY },
 };
 
 STD_ROM_PICK(Spf2tcb)
 STD_ROM_FN(Spf2tcb)
+
+
+// Super Puzzle Fighter II X' Balanced Patch (Hack)
+// Author: KScl
+// https://github.com/KScl/puzzle-fighter-x-prime
+
+static struct BurnRomInfo Spf2xpriRomDesc[] = {
+	{ "pzfxp.03",          0x080000, 0xf205a7da, CPS2_PRG_68K | BRF_ESS | BRF_PRG },
+	{ "pzfxp.04",          0x080000, 0x4177aadd, CPS2_PRG_68K | BRF_ESS | BRF_PRG },
+
+	{ "pzfxp.14m",         0x100000, 0x930b0ec7, CPS2_GFX | BRF_GRA },
+	{ "pzfxp.16m",         0x100000, 0x769377ad, CPS2_GFX | BRF_GRA },
+	{ "pzfxp.18m",         0x100000, 0x5a79233f, CPS2_GFX | BRF_GRA },
+	{ "pzfxp.20m",         0x100000, 0x42cfc9e2, CPS2_GFX | BRF_GRA },
+
+	{ "pzf.01",            0x020000, 0x600fb2a3, CPS2_PRG_Z80 | BRF_ESS | BRF_PRG },
+	{ "pzf.02",            0x020000, 0x496076e0, CPS2_PRG_Z80 | BRF_ESS | BRF_PRG },
+
+	{ "pzf.11m",           0x200000, 0x78442743, CPS2_QSND | BRF_SND },
+	{ "pzf.12m",           0x200000, 0x399d2c7b, CPS2_QSND | BRF_SND },
+
+	{ "spf2t.key",         0x000014, 0x4c4dc7e3, CPS2_ENCRYPTION_KEY },
+};
+
+STD_ROM_PICK(Spf2xpri)
+STD_ROM_FN(Spf2xpri)
 
 static struct BurnRomInfo Spf2xjRomDesc[] = {
 	{ "pzfj.03a",      0x080000, 0x2070554a, CPS2_PRG_68K | BRF_ESS | BRF_PRG },
@@ -10951,8 +10982,8 @@ struct BurnDriver BurnDrvCpsSpf2tb = {
 };
 
 struct BurnDriver BurnDrvCpsSpf2tcb = {
-	"spf2tcb", "spf2t", NULL, NULL, "1996",
-	"Super Puzzle Fighter II Turbo (Color Blind Hack)\0", NULL, "Capcom", "CPS2",
+	"spf2tcb", "spf2t", NULL, NULL, "2021",
+	"Super Puzzle Fighter II Turbo (Color Blind Hack)\0", NULL, "Hack", "CPS2",
 	NULL, NULL, NULL, NULL,
 	BDF_GAME_WORKING | BDF_CLONE | BDF_HACK | BDF_HISCORE_SUPPORTED, 2, HARDWARE_CAPCOM_CPS2, GBF_PUZZLE, FBF_SF,
 	NULL, Spf2tcbRomInfo, Spf2tcbRomName, NULL, NULL, NULL, NULL, Spf2tInputInfo, NULL,
@@ -10960,6 +10991,15 @@ struct BurnDriver BurnDrvCpsSpf2tcb = {
 	&CpsRecalcPal, 0x1000, 384, 224, 4, 3
 };
 
+struct BurnDriver BurnDrvCpsSpf2xpri = {
+	"spf2xpri", "spf2t", NULL, NULL, "2021",
+	"Super Puzzle Fighter 2 X' Balance Patch (Hack)\0", NULL, "Hack", "CPS2",
+	NULL, NULL, NULL, NULL,
+	BDF_GAME_WORKING | BDF_CLONE | BDF_HACK, 2, HARDWARE_CAPCOM_CPS2, GBF_PUZZLE, FBF_SF,
+	NULL, Spf2xpriRomInfo, Spf2xpriRomName, NULL, NULL, NULL, NULL, Spf2tInputInfo, NULL,
+	Cps2Init, DrvExit, Cps2Frame, CpsRedraw, CpsAreaScan,
+	&CpsRecalcPal, 0x1000, 384, 224, 4, 3
+};
 
 struct BurnDriver BurnDrvCpsSsf2 = {
 	"ssf2", NULL, NULL, NULL, "1993",
@@ -11886,6 +11926,30 @@ static struct BurnRomInfo DdsomudRomDesc[] = {
 
 STD_ROM_PICK(Ddsomud)
 STD_ROM_FN(Ddsomud)
+
+static struct BurnRomInfo Ddsoma4ppdecRomDesc[] = {
+	{ "a4pp.dec",      0x400000, 0x6611a98b, CPS2_PRG_68K | BRF_ESS | BRF_PRG },
+
+	{ "dd2.13m",       0x400000, 0xa46b4e6e, CPS2_GFX | BRF_GRA },
+	{ "dd2.15m",       0x400000, 0xd5fc50fc, CPS2_GFX | BRF_GRA },
+	{ "dd2.17m",       0x400000, 0x837c0867, CPS2_GFX | BRF_GRA },
+	{ "dd2.19m",       0x400000, 0xbb0ec21c, CPS2_GFX | BRF_GRA },
+	{ "dd2.14m",       0x200000, 0x6d824ce2, CPS2_GFX | BRF_GRA },
+	{ "dd2.16m",       0x200000, 0x79682ae5, CPS2_GFX | BRF_GRA },
+	{ "dd2.18m",       0x200000, 0xacddd149, CPS2_GFX | BRF_GRA },
+	{ "dd2.20m",       0x200000, 0x117fb0c0, CPS2_GFX | BRF_GRA },
+
+	{ "dd2.01",        0x020000, 0x99d657e5, CPS2_PRG_Z80 | BRF_ESS | BRF_PRG },
+	{ "dd2.02",        0x020000, 0x117a3824, CPS2_PRG_Z80 | BRF_ESS | BRF_PRG },
+
+	{ "dd2.11m",       0x200000, 0x98d0c325, CPS2_QSND | BRF_SND },
+	{ "dd2.12m",       0x200000, 0x5ea2e7fa, CPS2_QSND | BRF_SND },
+
+	{ "phoenix.key",   0x000014, 0x2cf772b0, CPS2_ENCRYPTION_KEY },
+};
+
+STD_ROM_PICK(Ddsoma4ppdec)
+STD_ROM_FN(Ddsoma4ppdec)
 
 static struct BurnRomInfo DdtoddRomDesc[] = {
 	{ "daded.03c",     0x080000, 0x843330f4, CPS2_PRG_68K | BRF_ESS | BRF_PRG },
@@ -13331,6 +13395,16 @@ struct BurnDriver BurnDrvCpsDdsomud = {
 	NULL, NULL, NULL, NULL,
 	BDF_GAME_WORKING | BDF_CLONE | BDF_BOOTLEG | BDF_HISCORE_SUPPORTED, 4, HARDWARE_CAPCOM_CPS2, GBF_SCRFIGHT, 0,
 	NULL, DdsomudRomInfo, DdsomudRomName, NULL, NULL, NULL, NULL, DdsomInputInfo, NULL,
+	PhoenixInit, DrvExit, Cps2Frame, CpsRedraw, CpsAreaScan,
+	&CpsRecalcPal, 0x1000, 384, 224, 4, 3
+};
+
+struct BurnDriver BurnDrvCpsDdsoma4ppdec = {
+	"ddsoma4ppdec", "ddsom", NULL, NULL, "1996",
+	"Dungeons & Dragons: Shadow over Mystara (Plus 2016-8-25)\0", NULL, "bootleg", "CPS2",
+	NULL, NULL, NULL, NULL,
+	BDF_GAME_WORKING | BDF_CLONE | BDF_BOOTLEG | BDF_HISCORE_SUPPORTED, 4, HARDWARE_CAPCOM_CPS2, GBF_SCRFIGHT, 0,
+	NULL, Ddsoma4ppdecRomInfo, Ddsoma4ppdecRomName, NULL, NULL, NULL, NULL, DdsomInputInfo, NULL,
 	PhoenixInit, DrvExit, Cps2Frame, CpsRedraw, CpsAreaScan,
 	&CpsRecalcPal, 0x1000, 384, 224, 4, 3
 };
