@@ -664,9 +664,6 @@
     <ClInclude Include="..\..\src\cpu\tlcs90_intf.h">
       <Filter>cpus</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\cpu\tms34010_intf.h">
-      <Filter>cpus</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\cpu\upd7810_intf.h">
       <Filter>cpus</Filter>
     </ClInclude>
@@ -957,6 +954,15 @@
     </ClInclude>
     <ClInclude Include="..\..\src\burner\win32\moscade_nexus.h">
       <Filter>burner\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cpu\e132xs_intf.h">
+      <Filter>cpus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cpu\tms34_intf.h">
+      <Filter>cpus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cpu\tms34\tms34010.h">
+      <Filter>cpus\tms34</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3756,9 +3762,6 @@
     <ClCompile Include="..\..\src\cpu\tms32010\tms32010.cpp">
       <Filter>cpus\tms32010</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\cpu\tms34010\tms34010.cpp">
-      <Filter>cpus\tms34010</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\cpu\upd7725\upd7725.cpp">
       <Filter>cpus\upd7725</Filter>
     </ClCompile>
@@ -3790,9 +3793,6 @@
       <Filter>cpus</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\cpu\tlcs90_intf.cpp">
-      <Filter>cpus</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\cpu\tms34010_intf.cpp">
       <Filter>cpus</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\cpu\z180_intf.cpp">
@@ -3941,9 +3941,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\burner\win32\placeholder.cpp">
       <Filter>burner\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\cpu\tms34010\tms34010_optable.cpp">
-      <Filter>cpus\tms34010</Filter>
     </ClCompile>
     <ClCompile Include="generated\m68kops.c">
       <Filter>generated</Filter>
@@ -4257,6 +4254,12 @@
     <ClCompile Include="..\..\src\burner\win32\moscade_nexus.cpp">
       <Filter>burner\win32</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\cpu\tms34_intf.cpp">
+      <Filter>cpus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cpu\tms34\tms34010.cpp">
+      <Filter>cpus\tms34</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Burn">
@@ -4463,9 +4466,6 @@
     <Filter Include="cpus\tms32010">
       <UniqueIdentifier>{1fec7b27-9ff0-4383-b012-205720e8b6b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="cpus\tms34010">
-      <UniqueIdentifier>{a40a6638-2a81-4cd9-a464-386c8b8d8c8d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="cpus\upd7725">
       <UniqueIdentifier>{c7ac38ac-45ca-4765-90a1-239d709609a5}</UniqueIdentifier>
     </Filter>
@@ -4501,6 +4501,9 @@
     </Filter>
     <Filter Include="python">
       <UniqueIdentifier>{75028469-da7c-4e50-b344-aa5f718db9cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpus\tms34">
+      <UniqueIdentifier>{4e803293-62f0-457c-a82d-35bb3675eb56}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

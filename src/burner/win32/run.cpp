@@ -8,15 +8,15 @@ int bAltPause = 0;
 
 int bAlwaysDrawFrames = 1;
 
-static bool bShowFPS = false;
+int bShowFPS = 0;
 static unsigned int nDoFPS = 0;
 
 static bool bMute = false;
 static int nOldAudVolume;
 
-int kNetVersion = NET_VERSION;				// Network version
+int kNetVersion = NET_VERSION;			// Network version
 int kNetGame = 0;						// Non-zero if network is being used
-int kNetSpectator = 0;			// Non-zero if network replay is active
+int kNetSpectator = 0;					// Non-zero if network replay is active
 int kNetLua = 1;						// Allow lua in network game
 
 #ifdef FBNEO_DEBUG
@@ -28,6 +28,7 @@ static bool bAppDoStep = 0;
 static bool bAppDoFast = 0;
 static bool bAppDoFastToggled = 0;
 static int nFastSpeed = 10;
+static int nSkipFrames = 0;
 static int nRunQuark = 1;
 
 int bRestartVideo = 0;
@@ -274,7 +275,6 @@ int RunFrame(int bDraw, int bPause, int bInput)
 			AudSoundFrame();
 		} else {
 			pBurnDraw = NULL;
-			pBurnSoundOut = NULL;
 			BurnDrvFrame();
 		}
 
@@ -356,10 +356,12 @@ int RunIdle()
 
 	if (kNetGame)
 	{
-		int skip = bAlwaysDrawFrames ? 0 : nCount;
+		int skip = bAlwaysDrawFrames ? nSkipFrames : (nCount > nSkipFrames ? nCount : nSkipFrames);
+		// skip frames (for rift balance or auto frame skip)
 		for (int i = skip; i > 0; i--) {
 			RunFrame(0, 0, 1);
 		}
+		nSkipFrames = 0;
 		RunFrame(1, 0, 1);					    // End-frame
 	} else {
 		if (bAppDoFast) {				    // do more frames
@@ -487,6 +489,7 @@ int RunMessageLoop()
 			if (PeekMessage(&Msg, NULL, 0, 0, PM_REMOVE)) {
 				// A message is waiting to be processed
 				if (Msg.message == WM_QUIT)	{											// Quit program
+					VidOverlayQuit();
 					break;
 				}
 				if (Msg.message == (WM_APP + 0)) {										// Restart video
@@ -701,9 +704,7 @@ int RunMessageLoop()
 										VidSKillTinyMsg();
 									}
 								} else if (!bEditActive) { // Backspace: toggles FPS counter
-									bShowFPS = !bShowFPS;
-									VidSShowStats(bShowFPS);
-									VidOverlayShowStats(bShowFPS);
+									bShowFPS = bShowFPS ? 0 : 1;
 									DisplayFPS();
 								}
 								break;

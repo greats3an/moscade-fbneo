@@ -25,4 +25,7 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerCommandArguments>moscade://match,jojobanr1,127.0.0.1:7000/@quark-UqOiWufacN9ypXiToDMSeg==-sERdCs5Yv9qOpl49yAfOPw==/</LocalDebuggerCommandArguments>
   </PropertyGroup>
+  <PropertyGroup>
+    <ShowAllFiles>false</ShowAllFiles>
+  </PropertyGroup>
 </Project>
