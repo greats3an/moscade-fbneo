@@ -34,14 +34,13 @@ class UDPForwarder(Thread):
         self.daemon = True
         
     def run(self):               
-        print('[UDP] Linking to server : %s:%s' % self.host_address)
-        self.fd.sendto(self.quark.encode(),self.host_address)
+        print('[UDP] Linking to server : %s:%s' % self.host_address)        
+        self.fd.sendto(self.quark.encode(),self.host_address)        
         data , addr = self.fd.recvfrom(256)
-        assert data.startswith(RESP_OK),'Bad response %x' % data
+        assert data.startswith(RESP_OK),'Bad response %s' % data
         print('[UDP] Linked to server : udp/%s:%s <-> %s:%s' % (*self.listen_address,*self.host_address))     
         data , addr = self.fd.recvfrom(256)
-        assert data.startswith(RESP_SYNC),'Bad response %x' % data
-        print('[UDP] SYNC Packet : %s' % data.hex())        
+        assert data.startswith(RESP_SYNC),'Bad response %s' % data        
         remote = ((socket.inet_ntoa(data[4:8]),struct.unpack('<H',data[8:])[0]))
         print('[UDP] Forwarding to address : %s:%d' % remote)        
         print('[NOTE] Protip : Press Alt + W in the emulator to bring up the network status window.')        
@@ -49,7 +48,7 @@ class UDPForwarder(Thread):
         packets_u,packets_d = 0,0
         tick0 = time_ns()
         while not self.shutdown_:
-            data , addr = self.fd.recvfrom(64)             
+            data , addr = self.fd.recvfrom(64)                   
             if addr != remote:
                 forwardee = forwardee or addr # Only update for the first time
                 self.fd.sendto(data,remote)
