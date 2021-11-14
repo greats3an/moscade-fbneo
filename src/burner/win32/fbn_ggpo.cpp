@@ -500,7 +500,7 @@ void QuarkInit(TCHAR* tconnect)
 
 		dprintf(_T("** Spawning MOSCade Nexus Proxy...\n"));
 		char args[512] = { 0 };
-		sprintf(args, "--tcp-host ws://%sggpo --udp-host ws://%snexus?quark=%s", uri.host, uri.host, uri.quark);
+		sprintf(args, "--host %s --quark %s", uri.host, uri.quark);
 		gp = &GGPONexusProxy(args);
 		gp->Start();
 		dprintf(_T("\n** Connecting via moscade:// protocol\n"));
