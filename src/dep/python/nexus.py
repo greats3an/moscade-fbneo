@@ -126,7 +126,8 @@ class UDPForwarder(Thread):
                     pongs += 1        
                     # When pong/ping ration reaches beyond 50%, consider
                     # A P2P connection is feasbile. Try to switch protocols
-                    self.upgrade_proto(PROTOCOL_CONE)
+                    if pings / pongs > 0.5:
+                        self.upgrade_proto(PROTOCOL_CONE)
                 elif resp == RESP_REJCT:
                     pass
                 else:
