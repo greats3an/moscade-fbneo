@@ -6,6 +6,7 @@ by mos9527 2021,licensed under GPL-2.0
 from argparse import ArgumentParser
 from select import select
 from socketserver import BaseRequestHandler, ThreadingMixIn , TCPServer
+import socketserver
 from threading import Thread
 from time import sleep, time_ns
 import socket,shutil,traceback,struct,os
@@ -57,10 +58,12 @@ class UDPForwarder(Thread):
         super().__init__()
         self.daemon = True
     
-    def receive_resp(self,data=None):
+    def receive_resp(self,data=None,addr=None):
         if not data:
-            data , addr = self.fd.recvfrom(64)
-        return data[:2],data[2:]
+            while True:
+                data , addr_ = self.fd.recvfrom(64)
+                if addr == None or addr == addr_:
+                    return data[:2],data[2:]
 
     def upgrade_proto(self,proto):
         if proto == PROTOCOL_CONE:
@@ -81,10 +84,10 @@ class UDPForwarder(Thread):
     def run(self):               
         self.logger.debug('STUN Traversal Server : %s:%s' % self.host_address)        
         self.fd.sendto(RQST_JOIN + self.quark.encode(),self.host_address)     
-        resp , data = self.receive_resp()                   
+        resp , data = self.receive_resp(addr=self.host_address)
         assert resp==RESP_OK,'Bad response %s' % resp
         self.logger.info('STUN Connected : udp/%s:%s <-> %s:%s' % (*self.listen_address,*self.host_address)) 
-        resp , data = self.receive_resp()
+        resp , data = self.receive_resp(addr=self.host_address)
         assert resp==RESP_SYNC,'Bad response %s' % resp
         self.logger.debug('SYNC Packet : %s' % data)
         self.remote_address = ((socket.inet_ntoa(data[:4]),struct.unpack('<H',data[4:])[0]))
@@ -124,9 +127,9 @@ class UDPForwarder(Thread):
                     self.fd.sendto(P2P_PONG,self.remote_address)
                 elif resp == P2P_PONG:                    
                     pongs += 1        
-                    # When pong/ping ration reaches beyond 50%, consider
+                    # When pong/ping ratio reaches beyond 80%, consider
                     # A P2P connection is feasbile. Try to switch protocols
-                    if pings / pongs > 0.5:
+                    if pings / pongs > 0.8:
                         self.upgrade_proto(PROTOCOL_CONE)
                 elif resp == RESP_REJCT:
                     pass
@@ -141,13 +144,14 @@ class UDPForwarder(Thread):
                     self.fd.sendto(P2P_PING,self.remote_address)
                     pings += 1
                 cols = shutil.get_terminal_size().columns
-                status = "\033[30;107m UDP "+ ('\033[103m SYMM ' if self.proto == PROTOCOL_SYMM else'\033[42m P2P / CONE ') + "\033[46;97m      ↑ %3d pkt/s        ↓ %3d pkt/s" % (packets_u,packets_d)
+                status = "\033[30;107m UDP "+ ('\033[103;5m SYMM ' if self.proto == PROTOCOL_SYMM else'\033[42m P2P / CONE ') + "\033[0m;\033[46;97m      ↑ %3d pkt/s        ↓ %3d pkt/s" % (packets_u,packets_d)
                 print(status.ljust(cols,' '),end='\r')
                 packets_u,packets_d = 0,0
                 tick0 = time_ns()
 
 class TCPServer(ThreadingMixIn,TCPServer):
     def __init__(self, listen_address , listen_port , host_address , host_port):
+        socketserver.TCPServer.allow_reuse_address = True
         self.ws_uri = 'ws://%s:%s/ggpo' % (host_address,host_port)
         super().__init__((listen_address,int(listen_port)),TCPHandler,True)     
         self.logger = logging.getLogger('TCP-WS')           
