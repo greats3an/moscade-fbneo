@@ -1,9 +1,11 @@
 '''
 MOSCade / ggposrv3 Websocket to UDP / TCP reverse proxy
 
-by mos9527 2021,licensed under GPL-2.0
+by mos9527 2022,licensed under GPL-2.0
 '''
 from argparse import ArgumentParser
+from asyncio.log import logger
+from cmath import log
 from select import select
 from socketserver import BaseRequestHandler, ThreadingMixIn , TCPServer
 import socketserver
@@ -14,9 +16,11 @@ import logging
 import websocket
 
 import coloredlogs
-coloredlogs.install(level=logging.DEBUG,fmt='[%(asctime)s] [%(levelname)s] %(message)s',datefmt='%H:%M:%S')
-logging.basicConfig(handlers=[logging.FileHandler('nexus.log'), logging.StreamHandler()])
-
+coloredlogs.install(level=logging.DEBUG,fmt='[%(asctime)s] %(name)s [%(levelname)s] %(message)s',datefmt='%H:%M:%S')
+file_handler = logging.FileHandler('nexus.log',mode='w',encoding='utf-8')
+file_handler.setFormatter(logging.getLogger().handlers[-1].formatter)
+logging.getLogger().name = '  ROOT  '
+logging.getLogger().addHandler(file_handler)
 # pip install websocket-client coloredlogs
 
 # Request
@@ -54,8 +58,7 @@ class UDPForwarder(Thread):
         self.proto = PROTOCOL_SYMM
         
         self.logger = logging.getLogger('UDP-STUN')
-
-        super().__init__()
+        super().__init__(name='UDP-STUN')
         self.daemon = True
     
     def receive_resp(self,data=None,addr=None):
@@ -81,80 +84,86 @@ class UDPForwarder(Thread):
         self.fd.sendto(P2P_PACKET + data,self.remote_address)
         return 1
 
-    def run(self):               
-        self.logger.debug('STUN Traversal Server : %s:%s' % self.host_address)        
-        self.fd.sendto(RQST_JOIN + self.quark.encode(),self.host_address)     
-        resp , data = self.receive_resp(addr=self.host_address)
-        assert resp==RESP_OK,'Bad response %s' % resp
-        self.logger.info('STUN Connected : udp/%s:%s <-> %s:%s' % (*self.listen_address,*self.host_address)) 
-        resp , data = self.receive_resp(addr=self.host_address)
-        assert resp==RESP_SYNC,'Bad response %s' % resp
-        self.logger.debug('SYNC Packet : %s' % data)
-        self.remote_address = ((socket.inet_ntoa(data[:4]),struct.unpack('<H',data[4:])[0]))
-        self.logger.info('Protip : You can press Alt + W in the emulator to bring up the network status window.')
-        self.logger.info('Protip : [ SYMM ] Indicates the server is handling the NAT traversal, which can cause performance degradation depending on where you live.')
-        self.logger.info('         [ P2P / CONE ] However,means that you have established a DIRECT conenction with your opponent. Which should yield the best experience.')
-        self.logger.info('         Otherwise, a VPN service may be used to imporve it even further.')        
-        # Begin forwarding        
-        forwardee = None
-        packets_u,packets_d = 0,0
-        tick0 = time_ns()
-        pings,pongs = 0,0
-        # Proitize SYMM Proto first since it has the best avaibilty. 
-        # If a direct peer-to-peer connection is fesabile, connection will corospondingly 
-        # change to mode of that
-        self.upgrade_proto(PROTOCOL_SYMM)
-        while not self.shutdown_:
-            data , addr = self.fd.recvfrom(64)                   
-            if addr == forwardee or (addr != self.host_address and addr != self.remote_address):
-                # Supposingly coming from localhost,which is the target we're trying to proxy
-                forwardee = addr
-                if self.proto == PROTOCOL_SYMM:                
-                    packets_u += self.send_symm(data)
-                elif self.proto == PROTOCOL_CONE:
-                    packets_u += self.send_cone(data)
-            elif forwardee:
-                # Remote packet, either from server's proxy or the other peer                
-                resp, data_ = self.receive_resp(data)
-                if resp == RESP_PROXY or resp == P2P_PACKET:
-                    # Packet transfer
-                    self.fd.sendto(data_,forwardee)                                
-                elif resp == RESP_SYMM_PROTO:                    
-                    self.proto = PROTOCOL_SYMM
-                elif resp == RESP_CONE_PROTO:
-                    self.proto = PROTOCOL_CONE                    
-                elif resp == P2P_PING:
-                    self.fd.sendto(P2P_PONG,self.remote_address)
-                elif resp == P2P_PONG:                    
-                    pongs += 1        
-                    # When pong/ping ratio reaches beyond 80%, consider
-                    # A P2P connection is feasbile. Try to switch protocols
-                    if pings / pongs > 0.8:
-                        self.upgrade_proto(PROTOCOL_CONE)
-                elif resp == RESP_REJCT:
-                    pass
-                else:
-                    self.logger.warn('PROXY Unexpected packet : 0x%s' % resp.hex()) 
-                packets_d += 1
-            if time_ns() - tick0 >= 1e9:
-                # Attempt to establish a CONE Protocol by sending ping-pongs every 1s
-                # Once received the corrsponding PONG, the consensus
-                # is made and P2P connection can be made
-                if self.proto == PROTOCOL_SYMM:
-                    self.fd.sendto(P2P_PING,self.remote_address)
-                    pings += 1
-                cols = shutil.get_terminal_size().columns
-                status = "\033[30;107m UDP "+ ('\033[103;5m SYMM ' if self.proto == PROTOCOL_SYMM else'\033[42m P2P / CONE ') + "\033[0m;\033[46;97m      ↑ %3d pkt/s        ↓ %3d pkt/s" % (packets_u,packets_d)
-                print(status.ljust(cols,' '),end='\r')
-                packets_u,packets_d = 0,0
-                tick0 = time_ns()
+    def run(self): 
+        try:              
+            self.logger.debug('STUN Traversal Server : %s:%s' % self.host_address)        
+            self.fd.sendto(RQST_JOIN + self.quark.encode(),self.host_address)     
+            resp , data = self.receive_resp(addr=self.host_address)
+            assert resp==RESP_OK,'Bad response %s' % resp
+            self.logger.info('STUN Connected : udp/%s:%s <-> %s:%s' % (*self.listen_address,*self.host_address)) 
+            resp , data = self.receive_resp(addr=self.host_address)
+            assert resp==RESP_SYNC,'Bad response %s' % resp
+            self.logger.debug('SYNC Packet : %s' % data)
+            self.remote_address = ((socket.inet_ntoa(data[:4]),struct.unpack('<H',data[4:])[0]))
+            self.logger.info('TIP : You can press Alt + W in the emulator to bring up the network status window.')
+            self.logger.info('TIP : [ SYMM ] Indicates the server is handling the NAT traversal, which can cause performance degradation depending on where you live.')
+            self.logger.info('         [ P2P / CONE ] However,means that you have established a DIRECT conenction with your opponent. Which should yield the best experience.')
+            self.logger.info('         Otherwise, a VPN service may be used to imporve it even further.')        
+            # Begin forwarding        
+            forwardee = None
+            packets_u,packets_d = 0,0
+            tick0 = time_ns()
+            pings,pongs = 0,0
+            # Proitize SYMM Proto first since it has the best avaibilty. 
+            # If a direct peer-to-peer connection is fesabile, connection will corospondingly 
+            # change to mode of that
+            self.upgrade_proto(PROTOCOL_SYMM)
+            while not self.shutdown_:
+                data , addr = self.fd.recvfrom(64)                   
+                if addr == forwardee or (addr != self.host_address and addr != self.remote_address):
+                    # Supposingly coming from localhost,which is the target we're trying to proxy
+                    forwardee = addr
+                    if self.proto == PROTOCOL_SYMM:                
+                        packets_u += self.send_symm(data)
+                    elif self.proto == PROTOCOL_CONE:
+                        packets_u += self.send_cone(data)
+                elif forwardee:
+                    # Remote packet, either from server's proxy or the other peer                
+                    resp, data_ = self.receive_resp(data)
+                    if resp == RESP_PROXY or resp == P2P_PACKET:
+                        # Packet transfer
+                        self.fd.sendto(data_,forwardee)                                
+                    elif resp == RESP_SYMM_PROTO:                    
+                        self.proto = PROTOCOL_SYMM
+                    elif resp == RESP_CONE_PROTO:
+                        self.proto = PROTOCOL_CONE                    
+                    elif resp == P2P_PING:
+                        self.fd.sendto(P2P_PONG,self.remote_address)
+                    elif resp == P2P_PONG:                    
+                        pongs += 1        
+                        # When pong/ping ratio reaches beyond 80%, consider
+                        # A P2P connection is feasbile. Try to switch protocols
+                        if pings / pongs > 0.8:
+                            self.upgrade_proto(PROTOCOL_CONE)
+                    elif resp == RESP_REJCT:
+                        pass
+                    else:
+                        self.logger.warn('PROXY Unexpected packet : 0x%s' % resp.hex()) 
+                    packets_d += 1
+                if time_ns() - tick0 >= 1e9:
+                    # Attempt to establish a CONE Protocol by sending ping-pongs every 1s
+                    # Once received the corrsponding PONG, the consensus
+                    # is made and P2P connection can be made
+                    if self.proto == PROTOCOL_SYMM:
+                        self.fd.sendto(P2P_PING,self.remote_address)
+                        pings += 1
+                    cols = shutil.get_terminal_size().columns
+                    status = "UDP " 
+                    status += 'SYMM ' if self.proto == PROTOCOL_SYMM else'P2P / CONE'
+                    status += "↑ %3d pkt/s        ↓ %3d pkt/s" % (packets_u,packets_d)
+                    print(status.ljust(cols,' '),end='\r')
+                    packets_u,packets_d = 0,0
+                    tick0 = time_ns()
+        except Exception as e:
+            self.logger.critical(str(e))
+            suicide()
 
 class TCPServer(ThreadingMixIn,TCPServer):
     def __init__(self, listen_address , listen_port , host_address , host_port):
         socketserver.TCPServer.allow_reuse_address = True
         self.ws_uri = 'ws://%s:%s/ggpo' % (host_address,host_port)
         super().__init__((listen_address,int(listen_port)),TCPHandler,True)     
-        self.logger = logging.getLogger('TCP-WS')           
+        self.logger = logging.getLogger('TCP-WSRV')          
         self.logger.info('READY : tcp/%s:%s <-> %s' % (*self.server_address,self.ws_uri))
 
 class TCPHandler(BaseRequestHandler):
@@ -190,7 +199,7 @@ class TCPHandler(BaseRequestHandler):
             sleep(0.001) 
         suicide()
 
-def suicide():
+def suicide():    
     logging.critical('Shutting down')    
     os.kill(os.getpid(), 9)
 
@@ -212,5 +221,4 @@ if __name__ == '__main__':
         srv.serve_forever()            
     except Exception as e: 
         logging.error(e)       
-        traceback.print_stack()        
         suicide()
