@@ -523,19 +523,19 @@ void GameDetector::Render()
 		// wait start
 		case ST_WAIT_START:
 			if (draw_detector_info) {
-				fontWrite(_T("Waiting Game Start"), frame_width - 0.005f, frame_height - 0.003f - FNT_MED * FNT_SEP * 1, 0xFFFFFFFF, 1.f, FNT_MED, FONT_ALIGN_RIGHT);
+				fontWrite(_T("准备中"), frame_width - 0.005f, frame_height - 0.003f - FNT_MED * FNT_SEP * 1, 0xFFFFFFFF, 1.f, FNT_MED, FONT_ALIGN_RIGHT);
 			}
 			break;
 		// playing
 		case ST_WAIT_WINNER:
 			if (draw_detector_info) {
-				fontWrite(_T("Waiting Game Winner"), frame_width - 0.005f, frame_height - 0.003f - FNT_MED * FNT_SEP * 1, 0xFFFFFFFF, 1.f, FNT_MED, FONT_ALIGN_RIGHT);
+				fontWrite(_T("等待比赛结束"), frame_width - 0.005f, frame_height - 0.003f - FNT_MED * FNT_SEP * 1, 0xFFFFFFFF, 1.f, FNT_MED, FONT_ALIGN_RIGHT);
 			}
 			break;
 		// wait end
 		case ST_WAIT_END:
 			if (draw_detector_info) {
-				fontWrite(_T("Waiting Game End"), frame_width - 0.005f, frame_height - 0.003f - FNT_MED * FNT_SEP * 1, 0xFFFFFFFF, 1.f, FNT_MED, FONT_ALIGN_RIGHT);
+				fontWrite(_T("等待游戏结束"), frame_width - 0.005f, frame_height - 0.003f - FNT_MED * FNT_SEP * 1, 0xFFFFFFFF, 1.f, FNT_MED, FONT_ALIGN_RIGHT);
 			}
 			break;
 	}

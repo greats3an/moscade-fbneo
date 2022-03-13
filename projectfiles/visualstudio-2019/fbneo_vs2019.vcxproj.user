@@ -23,7 +23,7 @@
     <LocalDebuggerCommand>$(SolutionDir)\..\..\build\$(TargetName)$(TargetExt)</LocalDebuggerCommand>
     <LocalDebuggerWorkingDirectory>..\..\build</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>moscade://match,jojobanr1,127.0.0.1:7000/@quark-UqOiWufacN9ypXiToDMSeg==-sERdCs5Yv9qOpl49yAfOPw==/</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>moscade://match,jojobanr1,localhost:8080/@local</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup>
     <ShowAllFiles>false</ShowAllFiles>

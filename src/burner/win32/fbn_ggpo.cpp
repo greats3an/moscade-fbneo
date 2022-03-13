@@ -496,10 +496,14 @@ void QuarkInit(TCHAR* tconnect)
 
 	/*@moscade */
 	if (strncmp(connect, "moscade://", strlen("moscade://")) == 0) {
-		MOSCadeURI uri; uri.from_uri(connect);
-
-		dprintf(_T("** Spawning MOSCade Nexus Proxy...\n"));
+		MOSCadeURI uri; uri.from_uri(connect);		
 		char args[512] = { 0 };
+		if (strncmp(uri.quark, "local", strlen("local")) == 0) {
+			dprintf(_T("** Playing localy."));
+			sprintf(args, "quark:debugdetector,%s", uri.game);
+			return QuarkInit(ANSIToTCHAR(args, NULL, 0));
+		}
+		dprintf(_T("** Spawning MOSCade Nexus Proxy...\n"));		
 		sprintf(args, "--host %s --quark %s", uri.host, uri.quark);
 		gp = &GGPONexusProxy(args);
 		gp->Start();
@@ -595,9 +599,9 @@ void QuarkInit(TCHAR* tconnect)
 				}
 				// load game detector in editor mode
 				DetectorLoad(game, true, iSeed);
-				VidOverlaySetGameInfo(_T("Detector1#0,0,0"), _T("Detector2#0,0,0"), false, iRanked, iPlayer);
+				VidOverlaySetGameInfo(_T("P1#0,0,0"), _T("P2#0,0,0"), false, iRanked, iPlayer);
 				VidOverlaySetGameSpectators(0);
-				VidSSetGameInfo(_T("Detector1"), _T("Detector2"), false, iRanked, iPlayer);
+				VidSSetGameInfo(_T("P1"), _T("P2"), false, iRanked, iPlayer);
 				VidSSetGameSpectators(0);
 				break;
 			}

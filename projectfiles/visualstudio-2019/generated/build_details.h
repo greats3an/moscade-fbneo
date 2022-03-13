@@ -1,5 +1,5 @@
-#define BUILD_TIME 10:12:03
-#define BUILD_DATE Feb  5 2022
+#define BUILD_TIME 08:13:22
+#define BUILD_DATE Mar 13 2022
 #define BUILD_CHAR Unicode
 #define BUILD_CPU  X86
 #define BUILD_COMP Visual C++ 13.2
