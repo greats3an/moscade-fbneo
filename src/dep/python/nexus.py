@@ -1,7 +1,7 @@
 '''
 MOSCade / ggposrv3 Websocket to UDP / TCP reverse proxy
 
-by mos9527 2022,licensed under GPL-2.0
+by mos9527 2023,licensed under GPL-2.0
 '''
 from argparse import ArgumentParser
 from asyncio.log import logger
@@ -62,11 +62,12 @@ class UDPForwarder(Thread):
         self.daemon = True
     
     def receive_resp(self,data=None,addr=None):
-        if not data:
-            while True:
-                data , addr_ = self.fd.recvfrom(64)
-                if addr == None or addr == addr_:
-                    return data[:2],data[2:]
+        if data:
+            return data[:2],data[2:]
+        while True:
+            data , addr_ = self.fd.recvfrom(64)
+            if addr == None or addr == addr_:
+                return data[:2],data[2:]
 
     def upgrade_proto(self,proto):
         if proto == PROTOCOL_CONE:
@@ -155,6 +156,7 @@ class UDPForwarder(Thread):
                     packets_u,packets_d = 0,0
                     tick0 = time_ns()
         except Exception as e:
+            print(traceback.format_exc())   
             self.logger.critical(str(e))
             suicide()
 
@@ -199,8 +201,9 @@ class TCPHandler(BaseRequestHandler):
             sleep(0.001) 
         suicide()
 
-def suicide():    
-    logging.critical('Shutting down')    
+def suicide():     
+    logging.info('TRACEBACK\n%s',traceback.format_exc())   
+    logging.critical('Shutting down')
     os.kill(os.getpid(), 9)
 
 if __name__ == '__main__':
